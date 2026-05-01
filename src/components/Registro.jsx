@@ -119,7 +119,7 @@ function Registro() {
       alert('⚠️ Solo falta que te registres como usuario para completar el proceso.');
       
       // Redirigir al registro
-      navigate('/register');
+      navigate('/Register');
       
       // Resetear el formulario
       setPaso(1);

@@ -3,14 +3,14 @@ import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../Estilos/Register.css';
 
-function Register() {
+function UserRegister() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [nit, setNit] = useState(''); // Estado para el NIT
   const [nombreEmpresa, setNombreEmpresa] = useState(''); // Estado para el nombre de la empresa
   const [error, setError] = useState('');
-  const { register } = useAuth();
+  const { UserRegister } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -66,7 +66,7 @@ function Register() {
     
     try {
       // Aquí puedes incluir los datos de la empresa en el registro
-      await register(email, password, { nit, nombreEmpresa });
+      await UserRegister(email, password, { nit, nombreEmpresa });
       alert('✅ Registro exitoso. Serás redirigido al inicio de sesión.');
       navigate('/login');
     } catch (err) {
@@ -148,4 +148,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default UserRegister;
