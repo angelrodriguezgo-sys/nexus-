@@ -6,11 +6,11 @@ import '../Estilos/Register.css';
 function UserRegister() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { register } = useAuth();
   const [confirmPassword, setConfirmPassword] = useState('');
   const [nit, setNit] = useState(''); // Estado para el NIT
   const [nombreEmpresa, setNombreEmpresa] = useState(''); // Estado para el nombre de la empresa
-  const [error, setError] = useState('');
-  const { UserRegister } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -66,7 +66,7 @@ function UserRegister() {
     
     try {
       // Aquí puedes incluir los datos de la empresa en el registro
-      await UserRegister(email, password, { nit, nombreEmpresa });
+      await register(email, password );//, { nit, nombreEmpresa } // ); 
       alert('✅ Registro exitoso. Serás redirigido al inicio de sesión.');
       navigate('/login');
     } catch (err) {
@@ -88,6 +88,7 @@ function UserRegister() {
         <p className="register-subtitle">Completa tus datos para registrarte</p>
 
         <form className="register-form" onSubmit={handleSubmit}>
+          
           {/* Campo NIT de la empresa */}
           <input
             className="register-input"

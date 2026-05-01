@@ -16,7 +16,7 @@ function Login() {
     setError('');
     try {
       await login(email, password); 
-       navigate('/');
+       navigate('/CeoPage');
     } catch (err) {
       if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
         setError('Credenciales inválidas.');
@@ -33,6 +33,7 @@ function Login() {
         <h2 className="login-title">Iniciar Sesión</h2>
         
         <form className="login-form" onSubmit={handleSubmit}>
+
           <input
             className="login-input"
             type="email"
