@@ -10,7 +10,7 @@ import CeoPage from './users/ceo/CeoPage';
 import Footer from './components/Footer';
 import PanelAdmin  from './pages/PanelAdmin';
 import Login from './components/Login';
-import Register from './components/Register';
+import UserRegister from './components/UserRegister';
 import ChatEmpresarial from './pages/ChatEmpresarial';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
             <Route path='/CeoPage' element={  <CeoPage/> } />
             <Route path='/PanelAdmin' element={<PanelAdmin/>} /> 
             <Route path='/login' element={<Login/>} />
-            <Route path='/register' element={<Register/>} />
+            <Route path='/Register' element={<UserRegister/>} />
             <Route path='/chat-empresarial' element={<ChatEmpresarial />} /> {/* Nueva ruta para el chat empresarial */}
         </Routes>
         <Footer/>

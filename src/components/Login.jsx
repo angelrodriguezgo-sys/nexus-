@@ -56,7 +56,7 @@ function Login() {
           {error && <p className="login-error">{error}</p>}
         </form>
         
-        <p className="login-register">
+        <p className="login-Register">
           ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
         </p>
       </div>
