@@ -9,8 +9,16 @@ import { auth } from "../services/firebase/Firebase";
 
 const AuthContext = createContext();
 
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error('useAuth debe ser utilizado dentro de un AuthProvider');
+    }
+    return context;
+};
+
 export const AuthProvider = ({children}) => {
-    const[currentUser, setCurrentUser] = useState(null);
+    const[currentUser, setCurrentUser] = useState(undefined);
     const[loading, setLoading] = useState(true);
 
     const register = (email, password) => {
@@ -30,23 +38,24 @@ export const AuthProvider = ({children}) => {
             setCurrentUser(user);
             setLoading(false);
         });
-        return () => unsubscribe();
+        return () => unsubscribe;
     }, []);
 
     const value = {
         currentUser,
         register,
         login,
-        logout
+        logout,
+        loading
     };
 
     return (
         <AuthContext.Provider value={value}>
-            {!loading && children}
+            {children}
         </AuthContext.Provider>
     );
 };
 
-export const useAuth = () => useContext(AuthContext);
+
 
 
