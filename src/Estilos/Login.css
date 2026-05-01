@@ -1,0 +1,202 @@
+:root {
+  --primary: #1A2B3C;
+  --oil-blue: #36618d;
+  --bright-blue: #4784ad;
+  --gray-light: #ECF0F1;
+  --gray-medium: #7F8C8D;
+  --success: #27AE60;
+  --warning: #F39C12;
+  --error: #E74C3C;
+  --white: #FFFFFF;
+  --black: #000000;
+}
+
+/* Contenedor principal - centra todo */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: --bright-blue7fa;
+  padding: 20px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Tarjeta blanca del formulario */
+.login-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px 30px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Título */
+.login-title {
+  text-align: center;
+  color: #1A2B3C;
+  font-size: 28px;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+/* Formulario */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Inputs */
+.login-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #3498DB;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.login-input::placeholder {
+  color: #999;
+}
+
+/* Botón */
+.login-btn {
+  background: #3498DB;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  background: #2980B9;
+}
+
+/* Mensaje de error */
+.login-error {
+  color: #e74c3c;
+  background: #fde8e7;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  margin: 10px 0 0 0;
+}
+
+/* Enlace de registro */
+.login-register {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+  color: #666;
+}
+
+.login-register a {
+  color: #3498DB;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-register a:hover {
+  text-decoration: underline;
+}
+
+
+
+/* Tablets y móviles grandes */
+@media (max-width: 768px) {
+  .login-card {
+    padding: 30px 25px;
+    max-width: 380px;
+  }
+
+  .login-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  .login-input {
+    padding: 11px 14px;
+    font-size: 15px;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 15px;
+  }
+
+  .login-card {
+    padding: 25px 20px;
+    border-radius: 12px;
+  }
+
+  .login-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .login-form {
+    gap: 15px;
+  }
+
+  .login-input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .login-btn {
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  .login-error {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .login-register {
+    font-size: 13px;
+    margin-top: 20px;
+    padding-top: 15px;
+  }
+}
+
+
+
+/* Quitar el outline azul por defecto en algunos navegadores */
+.login-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+/* Mejorar el espaciado en pantallas muy pequeñas */
+@media (max-width: 360px) {
+  .login-card {
+    padding: 20px 15px;
+  }
+
+  .login-title {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,295 @@
+:root {
+  --primary: #1A2B3C;
+  --oil-blue: #36618d;
+  --bright-blue: #4784ad;
+  --gray-light: #ECF0F1;
+  --gray-medium: #7F8C8D;
+  --success: #27AE60;
+  --warning: #F39C12;
+  --error: #E74C3C;
+  --white: #FFFFFF;
+  --black: #000000;
+}
+
+
+
+/* Contenedor principal */
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: --bright-blue;
+  padding: 20px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Tarjeta del formulario */
+.register-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 35px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.register-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Títulos */
+.register-title {
+  text-align: center;
+  color: #1A2B3C;
+  font-size: 28px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.register-subtitle {
+  text-align: center;
+  color: #7F8C8D;
+  font-size: 14px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #ECF0F1;
+  padding-bottom: 15px;
+}
+
+/* Formulario */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Inputs */
+.register-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #2C3E50;
+  background: #ffffff;
+  border: 1.5px solid #E0E0E0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.register-input:focus {
+  outline: none;
+  border-color: #3498DB;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.register-input:hover:not(:focus) {
+  border-color: #BDC3C7;
+}
+
+.register-input::placeholder {
+  color: #BDC3C7;
+  font-weight: 400;
+}
+
+/* Botón de registro */
+.register-btn {
+  background: #27AE60;
+  color: white;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+}
+
+.register-btn:hover {
+  background: #229954;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+}
+
+.register-btn:active {
+  transform: translateY(0);
+}
+
+/* Mensaje de error */
+.register-error {
+  color: #E74C3C;
+  background: #FDEDEC;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+  margin: 10px 0 0 0;
+  border-left: 4px solid #E74C3C;
+}
+
+/* Enlace de inicio de sesión */
+.register-login {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #ECF0F1;
+  font-size: 14px;
+  color: #7F8C8D;
+}
+
+.register-login a {
+  color: #3498DB;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.register-login a:hover {
+  color: #2980B9;
+  text-decoration: underline;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablets (768px) */
+@media (max-width: 768px) {
+  .register-card {
+    padding: 30px 25px;
+    max-width: 400px;
+  }
+
+  .register-title {
+    font-size: 24px;
+  }
+
+  .register-subtitle {
+    font-size: 13px;
+    margin-bottom: 25px;
+  }
+
+  .register-input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .register-btn {
+    padding: 12px;
+    font-size: 15px;
+  }
+}
+
+/* Móviles grandes (480px) */
+@media (max-width: 480px) {
+  .register-container {
+    padding: 15px;
+  }
+
+  .register-card {
+    padding: 25px 20px;
+    border-radius: 16px;
+  }
+
+  .register-title {
+    font-size: 22px;
+  }
+
+  .register-subtitle {
+    font-size: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+
+  .register-form {
+    gap: 14px;
+  }
+
+  .register-input {
+    padding: 11px 12px;
+    font-size: 14px;
+  }
+
+  .register-btn {
+    padding: 11px;
+    font-size: 14px;
+  }
+
+  .register-error {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .register-login {
+    font-size: 13px;
+    margin-top: 20px;
+    padding-top: 15px;
+  }
+}
+
+/* Móviles pequeños (360px) */
+@media (max-width: 360px) {
+  .register-card {
+    padding: 20px 15px;
+  }
+
+  .register-title {
+    font-size: 20px;
+  }
+
+  .register-subtitle {
+    font-size: 11px;
+  }
+
+  .register-input {
+    padding: 10px 10px;
+    font-size: 13px;
+  }
+
+  .register-btn {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-card {
+  animation: slideUp 0.4s ease-out;
+}
+
+/* ========================================
+   ACCESIBILIDAD
+   ======================================== */
+
+.register-btn:focus-visible,
+.register-input:focus-visible {
+  outline: 2px solid #3498DB;
+  outline-offset: 2px;
+}
+
+/* Prevenir zoom en inputs en iOS */
+@media (max-width: 768px) {
+  .register-input {
+    font-size: 16px;
+  }
+}

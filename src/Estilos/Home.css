@@ -1,0 +1,433 @@
+/* ========================================
+   VARIABLES GLOBALES
+   ======================================== */
+:root {
+    --primary: #1A2B3C;
+    --secondary: #3498DB;
+    --accent: #E74C3C;
+    --light: #ECF0F1;
+    --dark: #2C3E50;
+    --success: #27AE60;
+    --white: #FFFFFF;        /* ← AÑADIDO */
+    --gray-light: #BDC3C7;   /* ← AÑADIDO */
+    --text-dark: #2C3E50;
+    --text-gray: #666666;
+}
+
+/* ========================================
+   RESET Y BASE
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ========================================
+   HOME SECTION - QUIÉNES SOMOS
+   ======================================== */
+.home-section {
+    max-width: 1200px;
+    padding: 80px 20px;
+    margin: 0 auto;
+}
+
+.home-section .section-title {
+    font-size: 2.5rem;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.home-section .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--secondary);
+    border-radius: 2px;
+}
+
+/* Tarjeta principal */
+.home-section .service-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    margin-bottom: 3rem;
+}
+
+.home-section .quienes-somos-content {
+    text-align: center;
+}
+
+.home-section .section-icon {
+    font-size: 60px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.home-section .quienes-somos-texto {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Grid de servicios */
+.home-section .servicios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 60px;
+}
+
+.home-section .servicio-item {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.home-section .servicio-item:hover {
+    transform: translateY(-10px);
+}
+
+.home-section .servicio-icon {
+    font-size: 40px;
+    color: var(--secondary);
+    margin-bottom: 20px;
+}
+
+.home-section .servicio-item h3 {
+    color: var(--primary);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.home-section .servicio-item p {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+}
+
+/* ========================================
+   VISIÓN SECTION
+   ======================================== */
+.home-section .vision-section {
+    background: linear-gradient(135deg, #667eea 0%, #c3cfe2 100%);
+    border-radius: 50px;
+    padding: 60px 40px;
+    margin: 40px 0;
+}
+
+.home-section .vision-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.home-section .vision-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.home-section .vision-icon {
+    font-size: 80px;
+    color: var(--secondary);
+    flex-shrink: 0;
+}
+
+.home-section .vision-texto p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.home-section .vision-destacado {
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+/* Estadísticas */
+.home-section .vision-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.home-section .stat-item {
+    text-align: center;
+    background: var(--white);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.home-section .stat-numero {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--secondary);
+    margin-bottom: 10px;
+}
+
+.home-section .stat-label {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+/* ========================================
+   MISIÓN SECTION
+   ======================================== */
+.home-section .mision-section {
+    background: linear-gradient(135deg, #daa7dc 0%, #65b9f1 100%);
+    margin: 40px 0;
+    border-radius: 50px;
+    padding: 60px 40px;
+}
+
+.home-section .mision-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.home-section .mision-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 50px;
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+}
+
+.home-section .mision-icon {
+    font-size: 80px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.home-section .mision-texto {
+    color: white;
+}
+
+.home-section .mision-texto p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.home-section .mision-lista {
+    list-style: none;
+    padding: 0;
+    margin: 25px 0;
+}
+
+.home-section .mision-lista li {
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.home-section .mision-compromiso {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    font-style: italic;
+    border-left: 4px solid white;
+}
+
+/* ========================================
+   CTA (LLAMADA A LA ACCIÓN)
+   ======================================== */
+.home-section .cta-container {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 50px;
+    margin: 30px 0;
+}
+
+.home-section .highlight-text {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+
+.badge {
+  background-color: var(--success);
+  color: var(--white);
+  padding: 5px 15px;
+  border-radius: 50px;
+  font-size: 14px;
+  margin-left: 15px;
+  display: inline-block;
+}
+
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+/* Tablets (768px) */
+@media (max-width: 768px) {
+    .home-section {
+        padding: 50px 20px;
+    }
+
+    .home-section .section-title {
+        font-size: 2rem;
+    }
+
+    .home-section .service-card {
+        padding: 30px;
+    }
+
+    .home-section .servicios-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .home-section .vision-section,
+    .home-section .mision-section {
+        padding: 40px 20px;
+        margin: 30px 0;
+    }
+
+    .home-section .vision-content,
+    .home-section .mision-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px;
+    }
+
+    .home-section .vision-stats {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .home-section .vision-icon,
+    .home-section .mision-icon {
+        margin: 0 auto;
+    }
+
+    .home-section .mision-lista li {
+        text-align: left;
+        justify-content: flex-start;
+    }
+
+    .home-section .cta-container {
+        padding: 30px 20px;
+    }
+
+    .home-section .highlight-text {
+        font-size: 1.2rem;
+    }
+
+    .footer {
+        padding: 30px 20px;
+    }
+}
+
+/* Móviles pequeños (480px) */
+@media (max-width: 480px) {
+    .home-section {
+        padding: 30px 15px;
+    }
+
+    .home-section .section-title {
+        font-size: 1.5rem;
+    }
+
+    .home-section .service-card {
+        padding: 20px;
+    }
+
+    .home-section .section-icon {
+        font-size: 40px;
+    }
+
+    .home-section .quienes-somos-texto {
+        font-size: 0.9rem;
+    }
+
+    .home-section .vision-content,
+    .home-section .mision-content {
+        padding: 20px;
+    }
+
+    .home-section .vision-icon,
+    .home-section .mision-icon {
+        font-size: 50px;
+    }
+
+    .home-section .vision-texto p,
+    .home-section .mision-texto p {
+        font-size: 0.9rem;
+    }
+
+    .home-section .stat-numero {
+        font-size: 1.8rem;
+    }
+
+    .home-section .cta-container {
+        padding: 20px;
+    }
+
+    .home-section .highlight-text {
+        font-size: 1rem;
+    }
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.home-section .service-card,
+.home-section .vision-section,
+.home-section .mision-section,
+.home-section .cta-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.home-section .servicio-item {
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.home-section .servicio-item:nth-child(1) { animation-delay: 0.1s; }
+.home-section .servicio-item:nth-child(2) { animation-delay: 0.2s; }
+.home-section .servicio-item:nth-child(3) { animation-delay: 0.3s; }

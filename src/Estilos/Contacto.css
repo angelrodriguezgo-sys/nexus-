@@ -1,0 +1,439 @@
+
+
+/* Sección principal */
+.contacto-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.contacto-section .section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1A2B3C;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.contacto-section .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: #3498DB;
+  border-radius: 2px;
+}
+
+
+.contacto-section .cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.contacto-section .card {
+  background: #FFFFFF;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #ECF0F1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contacto-section .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.contacto-section .card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.contacto-section .card-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2C3E50;
+  margin-bottom: 0.5rem;
+}
+
+.contacto-section .card-info {
+  font-size: 0.9rem;
+  color: #3498DB;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.contacto-section .card-subinfo {
+  font-size: 0.75rem;
+  color: #7F8C8D;
+}
+
+
+
+.contacto-section .contact-box {
+  background: linear-gradient(135deg, #1A2B3C 0%, #2C3E50 100%);
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.contacto-section .contact-message {
+  color: #FFFFFF;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.contacto-section .contact-phone {
+  color: #3498DB;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.contacto-section .contact-note {
+  color: #BDC3C7;
+  font-size: 0.75rem;
+}
+
+
+
+.contacto-section .social-section {
+  text-align: center;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 100%);
+  border-radius: 1rem;
+  border: 1px solid #ECF0F1;
+}
+
+.contacto-section .social-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1A2B3C;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.contacto-section .social-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 3px;
+  background: #3498DB;
+  border-radius: 2px;
+}
+
+.contacto-section .social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.contacto-section .social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  background: #FFFFFF;
+  border: 1px solid #ECF0F1;
+  border-radius: 2rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2C3E50;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.contacto-section .social-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+/* Colores específicos por red social */
+.contacto-section .social-link:first-child:hover {
+  background: #1877F2;
+  border-color: #1877F2;
+  color: white;
+}
+
+.contacto-section .social-link:nth-child(2):hover {
+  background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF);
+  border-color: #DD2A7B;
+  color: white;
+}
+
+.contacto-section .social-link:nth-child(3):hover {
+  background: #0A66C2;
+  border-color: #0A66C2;
+  color: white;
+}
+
+.contacto-section .social-link:nth-child(4):hover {
+  background: #1DA1F2;
+  border-color: #1DA1F2;
+  color: white;
+}
+
+
+
+.contacto-section .form-container {
+  background: #FFFFFF;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin: 2rem auto; 
+  max-width: 800px;  
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #ECF0F1;
+  transition: box-shadow 0.3s ease;
+}
+.contacto-section .form-container:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.contacto-section .form-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1A2B3C;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #3498DB;
+  display: inline-block;
+}
+
+.contacto-section .contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contacto-section .form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.contacto-section .form-row > * {
+  flex: 1;
+  min-width: 200px;
+}
+
+.contacto-section .form-input,
+.contacto-section .form-textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #2C3E50;
+  background: #FFFFFF;
+  border: 1.5px solid #ECF0F1;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.contacto-section .form-input:focus,
+.contacto-section .form-textarea:focus {
+  outline: none;
+  border-color: #3498DB;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.contacto-section .form-input:hover:not(:focus),
+.contacto-section .form-textarea:hover:not(:focus) {
+  border-color: #BDC3C7;
+}
+
+.contacto-section .form-input::placeholder,
+.contacto-section .form-textarea::placeholder {
+  color: #BDC3C7;
+  font-weight: 400;
+}
+
+.contacto-section select.form-input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237F8C8D' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+.contacto-section select.form-input option {
+  padding: 0.5rem;
+}
+
+.contacto-section .form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contacto-section .submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: white;
+  background: #3498DB;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+.contacto-section .submit-btn:hover {
+  background: #2980B9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+
+.contacto-section .submit-btn:active {
+  transform: translateY(0);
+}
+
+
+/* Tablets (768px) */
+@media (max-width: 768px) {
+  .section {
+    padding: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .cards-container {
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .card-icon {
+    font-size: 2rem;
+  }
+
+  .contact-phone {
+    font-size: 1.25rem;
+  }
+
+  .social-section {
+    margin: 1.5rem 0;
+    padding: 1rem;
+  }
+
+  .social-link {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+  }
+
+  .form-container {
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .form-title {
+    font-size: 1.1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .form-row > * {
+    min-width: 100%;
+  }
+
+  .form-input,
+  .form-textarea {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+  }
+}
+
+/* Móviles (480px) */
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .contact-message {
+    font-size: 0.95rem;
+  }
+
+  .contact-phone {
+    font-size: 1.1rem;
+  }
+
+  .social-icons {
+    gap: 0.75rem;
+  }
+
+  .social-link {
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  .form-container {
+    padding: 1rem;
+  }
+}
+
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-container,
+.social-section,
+.cards-container {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.social-section {
+  animation-delay: 0.1s;
+}
+
+.cards-container {
+  animation-delay: 0.05s;
+}

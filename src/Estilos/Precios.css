@@ -1,0 +1,174 @@
+
+
+/* Sección principal */
+.precios-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.precios-section .section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1A2B3C;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.precios-section .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: #3498DB;
+  border-radius: 2px;
+}
+
+/* Contenedor de tarjetas */
+.precios-section .cards-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+/* Tarjetas de planes */
+.precios-section .plan-card {
+  background: #FFFFFF;
+  border-radius: 1.25rem;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid #ECF0F1;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 250px;
+  max-width: 320px;
+  position: relative;
+  overflow: hidden;
+}
+
+.precios-section .plan-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+  border-color: #3498DB;
+}
+
+.precios-section .plan-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #3498DB;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.precios-section .plan-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Plan destacado */
+.precios-section .plan-card:nth-child(2) {
+  border: 2px solid #3498DB;
+  box-shadow: 0 12px 28px rgba(52, 152, 219, 0.15);
+}
+
+.precios-section .plan-card:nth-child(2)::before {
+  transform: scaleX(1);
+}
+
+.precios-section .plan-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1A2B3C;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #ECF0F1;
+}
+
+.precios-section .plan-description {
+  font-size: 0.9rem;
+  color: #7F8C8D;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.precios-section .plan-btn {
+  background: #3498DB;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+.precios-section .plan-btn:hover {
+  transform: translateY(-2px);
+  background: #2980B9;
+}
+
+.precios-section .plan-btn a {
+  display: block;
+  padding: 0.875rem 1.5rem;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Banner de descuento */
+.precios-section .warning-banner {
+  background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%);
+  color: white;
+  text-align: center;
+  padding: 1rem 1.5rem;
+  border-radius: 3rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 2rem auto 0;
+  max-width: 400px;
+  animation: pulse 2s infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .precios-section {
+    padding: 2rem 1rem;
+  }
+  
+  .precios-section .cards-container {
+    gap: 1.5rem;
+  }
+  
+  .precios-section .plan-card {
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .precios-section .cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .precios-section .plan-card {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Animaciones */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}

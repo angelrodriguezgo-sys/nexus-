@@ -1,0 +1,16 @@
+.footer {
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 30px;
+  text-align: center;
+}
+
+.footer p {
+  margin-bottom: 10px;
+}
+
+.footer-small {
+  font-size: 14px;
+  color: var(--gray-light);
+  opacity: 0.8;
+}
