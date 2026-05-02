@@ -10,7 +10,7 @@ function Formulario() {
     nombre: "",
     apellido: "",
     email: "",
-    contraseña: "",
+    contrasena: "",
     telefono: "",
     terminos: false,
   });
@@ -33,10 +33,10 @@ function Formulario() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       nuevosErrores.email = "Email inválido";
     }
-    if (!formData.contraseña.trim()) {
-      nuevosErrores.contraseña = "La contraseña es requerida";
-    } else if (formData.contraseña.length < 8) {
-      nuevosErrores.contraseña =
+    if (!formData.contrasena.trim()) {
+      nuevosErrores.contrasena = "La contraseña es requerida";
+    } else if (formData.contrasena.length < 8) {
+      nuevosErrores.contrasena =
         "La contraseña debe tener mínimo 8 caracteres";
     }
     if (
@@ -72,11 +72,11 @@ function Formulario() {
         nombre: "",
         apellido: "",
         email: "",
-        contraseña: "",
+        contrasena: "",
         telefono: "",
         terminos: false,
       });
-      navigate("");
+      navigate("/login");
 
     }
   };
@@ -157,16 +157,16 @@ function Formulario() {
           <div className="input-wrapper">
             <input
               type="password"
-              name="contraseña"
+              name="contrasena"
               placeholder="••••••••"
               className="form-input"
-              value={formData.contraseña}
+              value={formData.contrasena}
               onChange={handleChange}
             />
           </div>
           <small className="input-helper">Mínimo 8 caracteres</small>
-          {errores.contraseña && (
-            <span className="error-message">{errores.contraseña}</span>
+          {errores.contrasena && (
+            <span className="error-message">{errores.contrasena}</span>
           )}
         </div>
 
@@ -219,9 +219,9 @@ function Formulario() {
             </svg>
           </button>
 
-          <button type="button" className="btn-secundario">
-            <Link to="/">Cancelar</Link>
-          </button>
+          <Link to="/" className="btn-secundario">
+            Cancelar
+          </Link>
         </div>
       </form>
 

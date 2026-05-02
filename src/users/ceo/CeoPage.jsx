@@ -1,55 +1,22 @@
 import React, { useState } from 'react';
-import { 
-  FaUsers, FaUserTie, FaUserCog, FaUser, 
-  FaCalendarAlt, FaChevronLeft, FaChevronRight,
-  FaBuilding, FaBell, FaSearch, FaUserCircle
-} from 'react-icons/fa';
-
-import "/src/Estilos/Ceo.css";
 import { Link } from 'react-router-dom';
+import { 
+  FaUsers, FaUserTie, FaUserCog, FaUser
+} from 'react-icons/fa';
 import { FaPerson } from 'react-icons/fa6';
 
+import DashboardHeader from '../../components/DashboardHeader';
+import Calendario from '../../components/Calendario';
+import '../../Estilos/Ceo.css';
+
 function DashboardEmpresa() {
-  const [fechaActual, setFechaActual] = useState(new Date());
   const [seccionActiva, setSeccionActiva] = useState('directores');
 
-  // Datos de ejemplo
+  // Datos de empresa
   const empresaData = {
     nombre: "MI EMPRESA S.A.S.",
     nit: "900.123.456-7"
   };
-
-  // Función para cambiar mes
-  const cambiarMes = (incremento) => {
-    setFechaActual(new Date(fechaActual.getFullYear(), fechaActual.getMonth() + incremento, 1));
-  };
-
-  // Obtener días del mes
-  const getDiasDelMes = () => {
-    const año = fechaActual.getFullYear();
-    const mes = fechaActual.getMonth();
-    const primerDia = new Date(año, mes, 1).getDay();
-    const ultimoDia = new Date(año, mes + 1, 0).getDate();
-    
-    const dias = [];
-    // Ajustar para que la semana empiece en lunes (1) en lugar de domingo (0)
-    const primerDiaAjustado = primerDia === 0 ? 6 : primerDia - 1;
-    
-    // Días vacíos antes del primer día del mes
-    for (let i = 0; i < primerDiaAjustado; i++) {
-      dias.push(null);
-    }
-    
-    // Días del mes
-    for (let i = 1; i <= ultimoDia; i++) {
-      dias.push(i);
-    }
-    
-    return dias;
-  };
-
-  const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-  const diasDelMes = getDiasDelMes();
 
   // Contenido dinámico según la sección activa
   const renderContenidoCentral = () => {
@@ -116,27 +83,7 @@ function DashboardEmpresa() {
   return (
     <div className="dashboard-container">
       {/* Header con título y NIT */}
-      <header className="dashboard-header">
-        <div className="header-left">
-          <FaBuilding className="header-icon" />
-        </div>
-        
-        <div className="header-center">
-          <h1 className="empresa-titulo">{empresaData.nombre}</h1>
-          <div className="empresa-nit">
-            <span className="nit-label">NIT</span>
-            <span className="nit-valor">{empresaData.nit}</span>
-          </div>
-        </div>
-        
-        <div className="header-right">
-          <Link to="/chat-empresarial" className="header-icon-link notificacion-link">
-                <FaBell className="header-icon notificacion" />
-          </Link>
-          <FaSearch className="header-icon busqueda" />
-          <FaUserCircle className="header-icon perfil" />
-        </div>
-      </header>
+      <DashboardHeader empresaData={empresaData} />
 
       {/* Contenido principal */}
       <div className="dashboard-main">
@@ -193,54 +140,7 @@ function DashboardEmpresa() {
 
         {/* Barra lateral derecha - Calendario */}
         <aside className="sidebar-right">
-          <div className="calendario-container">
-            <div className="calendario-header">
-              <button onClick={() => cambiarMes(-1)} className="mes-nav">
-                <FaChevronLeft />
-              </button>
-              <h3>
-                {fechaActual.toLocaleString('default', { month: 'long' })} {fechaActual.getFullYear()}
-              </h3>
-              <button onClick={() => cambiarMes(1)} className="mes-nav">
-                <FaChevronRight />
-              </button>
-            </div>
-
-            <div className="calendario-semana">
-              {diasSemana.map(dia => (
-                <div key={dia} className="dia-semana">{dia}</div>
-              ))}
-            </div>
-
-            <div className="calendario-dias">
-              {diasDelMes.map((dia, index) => (
-                <div key={index} className={`dia-mes ${dia ? '' : 'vacio'}`}>
-                  {dia && (
-                    <>
-                      <span className="dia-numero">{dia}</span>
-                      {dia === 15 && <span className="evento-indicador"></span>}
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div className="calendario-eventos">
-              <h4>Eventos del día</h4>
-              <div className="evento-item">
-                <span className="evento-hora">10:00</span>
-                <span className="evento-titulo">Reunión directores</span>
-              </div>
-              <div className="evento-item">
-                <span className="evento-hora">14:30</span>
-                <span className="evento-titulo">Evaluación líderes</span>
-              </div>
-              <div className="evento-item">
-                <span className="evento-hora">16:00</span>
-                <span className="evento-titulo">Entrega reportes</span>
-              </div>
-            </div>
-          </div>
+          <Calendario />
         </aside>
       </div>
 

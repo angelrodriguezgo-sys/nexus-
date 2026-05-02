@@ -1,5 +1,6 @@
 import '../Estilos/ChatEmpresarial.css';
 import React, { useState, useEffect, useRef } from 'react';
+import HeaderInt from '../components/HeaderInt';
 
 const ChatEmpresarial = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -10,7 +11,11 @@ const ChatEmpresarial = () => {
   const [error, setError] = useState('');
   const messagesEndRef = useRef(null);
 
-  // Rangos disponibles (de mayor a menor)
+  // Datos de empresa para HeaderInt
+  const empresaData = {
+    nombre: "MI EMPRESA S.A.S.",
+    nit: "900.123.456-7"
+  };
   const rangos = [
     { nombre: 'SuperAdmin', nivel: 5, color: '#FFD700' },
     { nombre: 'Admin', nivel: 4, color: '#FF6B6B' },
@@ -107,7 +112,9 @@ const ChatEmpresarial = () => {
   const usuariosDisponibles = getUsuariosDisponibles();
 
   return (
-    <div className="chat-main-container">
+    <>
+      <HeaderInt empresaData={empresaData} />
+      <div className="chat-main-container">
       {/* Sidebar - Lista de usuarios */}
       <div className="chat-sidebar">
         <div className="chat-user-profile">
@@ -230,7 +237,8 @@ const ChatEmpresarial = () => {
           </>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

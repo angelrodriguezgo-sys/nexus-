@@ -9,7 +9,7 @@ import "/src/Estilos/Ceo.css";
 import { Link } from 'react-router-dom';
 import { FaPerson } from 'react-icons/fa6';
 
-function DashboardEmpresa() {
+function Lider() {
   const [fechaActual, setFechaActual] = useState(new Date());
   const [seccionActiva, setSeccionActiva] = useState('directores');
 
@@ -227,4 +227,4 @@ function DashboardEmpresa() {
   );
 }
 
-export default DashboardEmpresa;
+export default Lider;
