@@ -3,13 +3,28 @@ import { Link } from 'react-router-dom';
 import { FaBuilding, FaBell, FaSearch, FaUserCircle, FaCog } from 'react-icons/fa';
 import '../Estilos/HeaderInt.css';  
 
-function HeaderInt({ empresaData }) {
+function HeaderInt({ empresaData, userRole }) {
+  // Función para determinar la ruta según el rol
+  const getHomeRoute = () => {
+    const routes = {
+      ceo: '/CeoPage',
+      director: '/DirectorPage',
+      lider: '/LiderPage',
+      empleado: '/EmpleadoPage',
+    };
+
+    const normalizedRole = String(userRole || '').trim().toLowerCase();
+    return routes[normalizedRole] || '/';
+  };
+
   return (
     <header className="dashboard-header">
       <div className="header-left">
         <div className="logo-section">
-          <FaBuilding className="header-logo-icon" />
-          <span className="logo-text">NEXUS</span>
+          <Link to={getHomeRoute()} className="logo-link">
+            <FaBuilding className="header-logo-icon" />
+            <span className="logo-text"> </span> {/* Tiene hipervinculo */}
+          </Link>
         </div>
       </div>
       

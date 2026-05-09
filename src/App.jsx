@@ -12,6 +12,11 @@ import PanelAdmin  from './pages/PanelAdmin';
 import Login from './components/Login';
 import UserRegister from './components/UserRegister';
 import ChatEmpresarial from './pages/ChatEmpresarial';
+import Director from './users/director/Director';
+import Lider from './users/lider/Lider';
+import Empleado from './users/empleado/Empleado';
+
+
 
 function App() {
 
@@ -24,10 +29,13 @@ function App() {
             <Route path='/contacto' element={<Contacto/>}/>
             <Route path='/formulario' element={<Formulario/>}/>
             <Route path="/registro" element={<Registro/>} /> {/* Registrar empresa */}
-            <Route path='/CeoPage' element={  <CeoPage/> } />
-            <Route path='/PanelAdmin' element={<PanelAdmin/>} /> 
             <Route path='/login' element={<Login/>} />
             <Route path='/Register' element={<UserRegister/>} />
+            <Route path='/CeoPage' element={  <CeoPage/> } />
+            <Route path='/DirectorPage' element={<Director/>} />
+            <Route path='/LiderPage' element={<Lider/>} />
+            <Route path='/EmpleadoPage' element={<Empleado/>} />
+            <Route path='/PanelAdmin' element={<PanelAdmin/>} /> 
             <Route path='/chat-empresarial' element={<ChatEmpresarial />} /> {/* Nueva ruta para el chat empresarial */}
         </Routes>
         <Footer/>

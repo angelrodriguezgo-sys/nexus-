@@ -43,7 +43,7 @@ function Precio(){
                 Capacidad de 50 a 200 Usuarios
               </p>
               <button className="plan-btn"> 
-                  <Link to="/CeoPage">Consultar</Link>
+                  <Link to="/DirectorPage">Consultar</Link>
               </button>
             </div>
           </div>

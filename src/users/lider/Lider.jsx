@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  FaUsers, FaUserTie, FaUserCog, FaUser, 
-  FaCalendarAlt, FaChevronLeft, FaChevronRight,
-  FaBuilding, FaBell, FaSearch, FaUserCircle
-} from 'react-icons/fa';
-
-import "/src/Estilos/Ceo.css";
+import { FaUsers, FaUserTie, FaUserCog, FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { FaPerson } from 'react-icons/fa6';
+import DashboardHeader from '../../components/DashboardHeader';
+import Calendario from '../../components/Calendario';
+import '../../Estilos/Ceo.css';
 
 function Lider() {
   const [fechaActual, setFechaActual] = useState(new Date());
   const [seccionActiva, setSeccionActiva] = useState('directores');
+  const userRole = 'Líder'; // Este valor debería venir de la autenticación del usuario
+
 
   // Datos de ejemplo
   const empresaData = {
@@ -54,6 +53,7 @@ function Lider() {
   // Contenido dinámico según la sección activa
   const renderContenidoCentral = () => {
     switch(seccionActiva) {
+      
       case 'directores':
         return (
           <div className="seccion-contenido">
@@ -102,39 +102,15 @@ function Lider() {
             </div>
           </div>
         );
-      case 'PanelAdmin':
-        return (
-          <div className="seccion-contenido">
-            <Link to="/PanelAdmin" className="boton-panel-admin">Ir a Panel Admin</Link> 
-          </div>
-        ); 
+      
       default:
         return null;
     }
   };
 
   return (
-    <div className="dashboard-container">
-      {/* Header con título y NIT */}
-      <header className="dashboard-header">
-        <div className="header-left">
-          <FaBuilding className="header-icon" />
-        </div>
-        
-        <div className="header-center">
-          <h1 className="empresa-titulo">{empresaData.nombre}</h1>
-          <div className="empresa-nit">
-            <span className="nit-label">NIT</span>
-            <span className="nit-valor">{empresaData.nit}</span>
-          </div>
-        </div>
-        
-        <div className="header-right">
-          <FaBell className="header-icon notificacion" />
-          <FaSearch className="header-icon busqueda" />
-          <FaUserCircle className="header-icon perfil" />
-        </div>
-      </header>
+    <div className="dashboard-container lider">
+      <DashboardHeader empresaData={empresaData} />
 
       {/* Contenido principal */}
       <div className="dashboard-main">
@@ -142,7 +118,22 @@ function Lider() {
         <aside className="sidebar-left">
           <nav className="nav-menu">
           
-            
+            <button 
+              className={`nav-item ${seccionActiva === 'directores' ? 'activo' : ''}`}
+              onClick={() => setSeccionActiva('directores')}
+            >
+              <FaUserTie className="nav-icon" />
+              <span>Directores</span>
+            </button>
+
+            <button 
+              className={`nav-item ${seccionActiva === 'lideres' ? 'activo' : ''}`}
+              onClick={() => setSeccionActiva('lideres')}
+            >
+              <FaUserCog className="nav-icon" />
+              <span>Líderes</span>
+            </button>
+
             <button 
               className={`nav-item ${seccionActiva === 'empleados' ? 'activo' : ''}`}
               onClick={() => setSeccionActiva('empleados')}
@@ -151,7 +142,7 @@ function Lider() {
               <span>Empleados</span>
             </button>
 
-         
+           
 
             <div className="nav-divider"></div>
 
@@ -171,54 +162,7 @@ function Lider() {
 
         {/* Barra lateral derecha - Calendario */}
         <aside className="sidebar-right">
-          <div className="calendario-container">
-            <div className="calendario-header">
-              <button onClick={() => cambiarMes(-1)} className="mes-nav">
-                <FaChevronLeft />
-              </button>
-              <h3>
-                {fechaActual.toLocaleString('default', { month: 'long' })} {fechaActual.getFullYear()}
-              </h3>
-              <button onClick={() => cambiarMes(1)} className="mes-nav">
-                <FaChevronRight />
-              </button>
-            </div>
-
-            <div className="calendario-semana">
-              {diasSemana.map(dia => (
-                <div key={dia} className="dia-semana">{dia}</div>
-              ))}
-            </div>
-
-            <div className="calendario-dias">
-              {diasDelMes.map((dia, index) => (
-                <div key={index} className={`dia-mes ${dia ? '' : 'vacio'}`}>
-                  {dia && (
-                    <>
-                      <span className="dia-numero">{dia}</span>
-                      {dia === 15 && <span className="evento-indicador"></span>}
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div className="calendario-eventos">
-              <h4>Eventos del día</h4>
-              <div className="evento-item">
-                <span className="evento-hora">10:00</span>
-                <span className="evento-titulo">Reunión directores</span>
-              </div>
-              <div className="evento-item">
-                <span className="evento-hora">14:30</span>
-                <span className="evento-titulo">Evaluación líderes</span>
-              </div>
-              <div className="evento-item">
-                <span className="evento-hora">16:00</span>
-                <span className="evento-titulo">Entrega reportes</span>
-              </div>
-            </div>
-          </div>
+          <Calendario />
         </aside>
       </div>
 

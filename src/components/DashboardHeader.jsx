@@ -9,7 +9,7 @@ function DashboardHeader({ empresaData }) {
       <div className="header-left">
         <div className="logo-section">
           <FaBuilding className="header-logo-icon" />
-          <span className="logo-text">NEXUS</span>
+          <span className="logo-text"></span> {/* No tiene hipervinculo */}
         </div>
       </div>
       

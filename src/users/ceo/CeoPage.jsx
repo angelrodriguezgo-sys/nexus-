@@ -11,6 +11,8 @@ import '../../Estilos/Ceo.css';
 
 function DashboardEmpresa() {
   const [seccionActiva, setSeccionActiva] = useState('directores');
+  const userRole = 'CEO'; // Este valor debería venir de la autenticación del usuario
+
 
   // Datos de empresa
   const empresaData = {
@@ -21,6 +23,22 @@ function DashboardEmpresa() {
   // Contenido dinámico según la sección activa
   const renderContenidoCentral = () => {
     switch(seccionActiva) {
+      case 'Ceo':
+              return (
+                <div className="seccion-contenido">
+                  <h3>CEO's</h3>
+                  <div className="tarjetas-grid">
+                    {[1, 2, 3, 4].map(i => (
+                      <div key={i} className="tarjeta-persona ceo">
+                        <FaUserCog className="tarjeta-icono" />
+                        <h4>CEO {i}</h4>
+                        <p>Equipo: {i === 1 ? 'Ventas' : i === 2 ? 'Marketing' : 'Operaciones'}</p>
+                        <span className="badge">Activo</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
       case 'directores':
         return (
           <div className="seccion-contenido">
@@ -81,7 +99,7 @@ function DashboardEmpresa() {
   };
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container ceo">
       {/* Header con título y NIT */}
       <DashboardHeader empresaData={empresaData} />
 
@@ -90,6 +108,13 @@ function DashboardEmpresa() {
         {/* Barra lateral izquierda - Navegación */}
         <aside className="sidebar-left">
           <nav className="nav-menu">
+              <button 
+              className={`nav-item ${seccionActiva === 'ceo' ? 'activo' : ''}`}
+              onClick={() => setSeccionActiva('ceo')}
+            >
+              <FaUserTie className="nav-icon" />
+              <span>Ceo</span>
+            </button>
             <button 
               className={`nav-item ${seccionActiva === 'directores' ? 'activo' : ''}`}
               onClick={() => setSeccionActiva('directores')}

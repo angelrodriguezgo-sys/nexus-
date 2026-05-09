@@ -168,8 +168,23 @@
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .dashboard-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-container.ceo {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dashboard-container.director {
+  background: linear-gradient(135deg, #ee852f 0%, #eb811e 100%);
+}
+
+.dashboard-container.lider {
+  background: linear-gradient(135deg, #0f4c81 0%, #3b82f6 100%);
+}
+
+.dashboard-container.empleado {
+  background: linear-gradient(135deg, #1f7a4e 0%, #5ecb8a 100%);
 }
 
 /* ===== MAIN LAYOUT ===== */

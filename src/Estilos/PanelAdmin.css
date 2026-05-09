@@ -29,30 +29,34 @@ body {
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .panel-admin-container {
-  max-width: 1300px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 28px;
+  padding: 24px 28px;
   background: #f1f5f9;
-  min-height: 100vh;
+  min-height: calc(100vh - 70px);
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER DEL PANEL ===== */
 .panel-header {
   background: white;
-  padding: 20px 24px;
+  padding: 24px 28px;
   border-radius: var(--radius);
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   box-shadow: var(--shadow);
+  border-left: 5px solid #667eea;
 }
 
 .panel-header h1 {
-  font-size: 24px;
-  margin-bottom: 6px;
+  font-size: 26px;
+  margin-bottom: 8px;
   color: var(--primary);
+  font-weight: 700;
 }
 
 .panel-header p {
   color: #64748b;
+  font-size: 14px;
+  margin: 0;
 }
 
 /* ===== TARJETAS ESTADÍSTICAS ===== */
@@ -348,5 +352,82 @@ body {
   
   .btn {
     width: 100%;
+  }
+}
+
+/* ===== ESTILOS DE INTEGRACIÓN CON HEADERINT ===== */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Asegurar que el contenedor se alinee bien con el header */
+.panel-admin-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Mejorar el aspecto del header del panel */
+.panel-header {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mejorar visual de estadísticas */
+.stat-box {
+  transition: all 0.3s ease;
+}
+
+.stat-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+/* Mejorar contraste de botones */
+.btn {
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* Estilos de formulario mejorados */
+.panel-form-section {
+  max-height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+/* Mejorar tabla responsive */
+.admin-table tbody tr:hover {
+  background-color: #f8fafc;
+  transition: background-color 0.2s ease;
+}
+
+.admin-table tbody tr:hover td {
+  color: var(--primary);
+}
+
+@media (max-width: 1100px) {
+  .panel-form-section {
+    position: static;
+    top: auto;
   }
 }

@@ -1,8 +1,18 @@
 import { useState, useEffect } from 'react';
+import HeaderInt from '../components/HeaderInt';
 import '../Estilos/PanelAdmin.css';
 
 function PanelAdmin() {
   const [trabajadores, setTrabajadores] = useState([]);
+  
+  // Datos de la empresa (puede ser dinamizado desde props o context)
+  const empresaData = {
+    nombre: 'Mi Empresa',
+    nit: '123456789'
+  };
+
+  // Rol del usuario (en un sistema real vendría de autenticación)
+  const userRole = 'CEO';
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -102,12 +112,14 @@ function PanelAdmin() {
   };
 
   return (
-    <div className="panel-admin-container">
-      {/* ===== HEADER ===== */}
-      <div className="panel-header">
-        <h1>👨‍💼 Panel de Administración de Empleadoss</h1>
-        <p>Gestión completa de empleados y personal</p>
-      </div>
+    <>
+      <HeaderInt empresaData={empresaData} userRole={userRole} />
+      <div className="panel-admin-container">
+        {/* ===== HEADER DEL PANEL ===== */}
+        <div className="panel-header">
+          <h1>👨‍💼 Panel de Administración de Empleados</h1>
+          <p>Gestión completa de empleados y personal</p>
+        </div>
 
       {/* ===== TARJETAS ESTADÍSTICAS ===== */}
       <div className="panel-stats">
@@ -173,8 +185,8 @@ function PanelAdmin() {
                 <label>Rol de Sistema</label>
                 <select name="rol" value={formData.rol} onChange={handleInputChange}>
                   <option>Admin</option>
-                  <option>T.I</option>
-                  <option>R.R.H.H</option>
+                  <option>Director</option>
+                  <option>Lider</option>
                   <option>Empleado</option>
                 </select>
               </div>
@@ -275,7 +287,8 @@ function PanelAdmin() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
 
