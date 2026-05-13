@@ -4,7 +4,7 @@ import {
   FaUsers, FaUserTie, FaUserCog, FaUser
 } from 'react-icons/fa';
 import { FaPerson } from 'react-icons/fa6';
-import { useNavigate, Link } from 'react-router-dom';  // ✅ Importar Link también
+import { useNavigate } from 'react-router-dom';
 
 import HeaderInt from '../../components/HeaderInt';
 import Calendario from '../../components/Calendario';
@@ -15,6 +15,16 @@ function CeoPage() {
   const { user, empresa, loading, logout } = useAuth();
   const navigate = useNavigate();
   const [seccionActiva, setSeccionActiva] = useState('directores');
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login', { replace: true });
+    } catch (err) {
+      console.error('Error al cerrar sesión:', err);
+      alert('Hubo un problema al cerrar sesión. Intenta nuevamente.');
+    }
+  };
 
   useEffect(() => {
     if (!loading && !user) navigate('/login');
@@ -37,7 +47,7 @@ function CeoPage() {
 
   // ✅ Función para navegar al panel admin
   const irAPanelAdmin = () => {
-    navigate('/panel-admin', { state: { empresaData } });
+    navigate('/PanelAdmin', { state: { empresaData } });
   };
 
   const renderContenidoCentral = () => {
@@ -95,15 +105,15 @@ function CeoPage() {
   };
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-container ceo">
       <HeaderInt empresaData={empresaData} userRole="CEO" />
       
       <div className="dashboard-main">
         <aside className="sidebar-left">
           <nav className="nav-menu">
-            {/* ✅ BOTÓN CORREGIDO - Usando onClick */}
-            <button className="seccion-contenido">
-                <Link to="/PanelAdmin" className="boton-panel-admin">Panel de Administracion</Link>  {/* agregar apertura de nueva pagina */}
+            {/* ✅ BOTÓN CORREGIDO - Usando onClick y pasando empresaData */}
+            <button className="boton-panel-admin" onClick={irAPanelAdmin}>
+              Panel de Administracion
             </button>
             
             <button 
@@ -125,7 +135,7 @@ function CeoPage() {
               <FaUsers className="nav-icon" /> <span>Empleados</span>
             </button>
             <div className="nav-divider"></div>
-            <button className="nav-item" onClick={logout}>
+            <button className="nav-item" onClick={handleLogout}>
               🚪 <span>Cerrar Sesión</span>
             </button>
           </nav>

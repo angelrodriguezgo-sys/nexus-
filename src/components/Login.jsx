@@ -3,11 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { db, doc, getDoc } from '../services/firebase/Firebase';
 import '../Estilos/Login.css';
-import { useEffect } from 'react';
-import CeoPage from '../users/ceo/CeoPage';
-import Director from '../users/director/Director';
-import Lider from '../users/lider/Lider';
-import Empleado from '../users/empleado/Empleado'; 
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -34,7 +29,7 @@ function Login() {
       
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        const userRole = userData.rol;
+        const userRole = String(userData.rol || '').toLowerCase();
         const empresaId = userData.empresaId;
         const empresaNombre = userData.empresaNombre;
         
@@ -42,20 +37,20 @@ function Login() {
         
         // ✅ Redirigir según el rol
         switch(userRole) {
-          case 'CEO':
+          case 'ceo':
             navigate('/CeoPage', { state: { empresaId, empresaNombre, rol: userRole } });
             break;
-          case 'Director':
-            navigate('/Director', { state: { empresaId, empresaNombre, rol: userRole } });
+          case 'director':
+            navigate('/DirectorPage', { state: { empresaId, empresaNombre, rol: userRole } });
             break;
-          case 'Lider':
-            navigate('/Lider', { state: { empresaId, empresaNombre, rol: userRole } });
+          case 'lider':
+            navigate('/LiderPage', { state: { empresaId, empresaNombre, rol: userRole } });
             break;
-          case 'Empleado':
-            navigate('/Empleado', { state: { empresaId, empresaNombre, rol: userRole } });
+          case 'empleado':
+            navigate('/EmpleadoPage', { state: { empresaId, empresaNombre, rol: userRole } });
             break;
           default:
-            navigate('/CeoPage', { state: { empresaId, empresaNombre, rol: userRole } });
+            navigate('/login');
         }
       } else {
         console.warn('Usuario no encontrado en Firestore');

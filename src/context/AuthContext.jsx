@@ -248,6 +248,7 @@ export function AuthProvider({ children }) {
   // 5. LOGOUT
   // ============================================================
   const logout = async () => {
+    setError(null);
     try {
       await signOut(auth);
       setUser(null);
@@ -255,6 +256,7 @@ export function AuthProvider({ children }) {
     } catch (err) {
       console.error('Error al cerrar sesión:', err);
       setError('Error al cerrar sesión');
+      throw err;
     }
   };
 

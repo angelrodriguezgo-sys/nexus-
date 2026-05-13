@@ -172,19 +172,19 @@
 }
 
 .dashboard-container.ceo {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6b4cb8 0%, #8f6cd8 100%);
 }
 
 .dashboard-container.director {
-  background: linear-gradient(135deg, #ee852f 0%, #eb811e 100%);
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
 }
 
 .dashboard-container.lider {
-  background: linear-gradient(135deg, #0f4c81 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #91c9f7 0%, #5da5f7 100%);
 }
 
 .dashboard-container.empleado {
-  background: linear-gradient(135deg, #1f7a4e 0%, #5ecb8a 100%);
+  background: linear-gradient(135deg, #2f8a4e 0%, #78d37c 100%);
 }
 
 /* ===== MAIN LAYOUT ===== */

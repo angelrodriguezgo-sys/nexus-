@@ -1,6 +1,5 @@
 import '../Estilos/ChatEmpresarial.css';
-import React, { useState, useEffect, useRef } from 'react';
-import HeaderInt from '../components/HeaderInt';
+import React, { useState, useEffect, useRef } from 'react';import { useAuth } from '../context/AuthContext';import HeaderInt from '../components/HeaderInt';
 import { db } from '../services/firebase/Firebase';
 import { collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp } from 'firebase/firestore';
 
@@ -15,10 +14,12 @@ const ChatEmpresarial = () => {
   const [unsubscribe, setUnsubscribe] = useState(null);
   const messagesEndRef = useRef(null);
 
+  const { empresa } = useAuth();
+
   // Datos de empresa para HeaderInt
   const empresaData = {
-    nombre: "MI EMPRESA S.A.S.",
-    nit: "900.123.456-7"
+    nombre: empresa?.nombre || 'MI EMPRESA S.A.S.',
+    nit: empresa?.nit || '900.123.456-7'
   };
 
   // Determinar el rol del usuario actual para HeaderInt

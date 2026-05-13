@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaUsers, FaUserTie, FaUserCog, FaUser } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaPerson } from 'react-icons/fa6';
-import DashboardHeader from '../../components/DashboardHeader';
+import HeaderInt from '../../components/HeaderInt';
 import Calendario from '../../components/Calendario';
 import '../../Estilos/Ceo.css';
 import { useAuth } from '../../context/AuthContext';
@@ -12,13 +12,39 @@ function Lider() {
   const navigate = useNavigate();
   const [seccionActiva, setSeccionActiva] = useState('empleados');
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login', { replace: true });
+    } catch (err) {
+      console.error('Error al cerrar sesión:', err);
+      alert('Hubo un problema al cerrar sesión. Intenta nuevamente.');
+    }
+  };
+
   // ✅ Redirigir si no hay usuario o no es líder
   useEffect(() => {
     if (!loading && !user) {
       navigate('/login');
+      return;
     }
-    if (!loading && user && user.rol !== 'lider') {
-      navigate('/dashboard');
+    if (!loading && user && user.rol) {
+      const role = String(user.rol || '').toLowerCase();
+      if (role !== 'lider') {
+        switch(role) {
+          case 'ceo':
+            navigate('/CeoPage');
+            break;
+          case 'director':
+            navigate('/DirectorPage');
+            break;
+          case 'empleado':
+            navigate('/EmpleadoPage');
+            break;
+          default:
+            navigate('/login');
+        }
+      }
     }
   }, [user, loading, navigate]);
 
@@ -126,7 +152,7 @@ function Lider() {
 
   return (
     <div className="dashboard-container lider">
-      <DashboardHeader empresaData={empresaData} userRole={`LÍDER - ${liderData.equipo}`} />
+      <HeaderInt empresaData={empresaData} userRole={`LÍDER - ${liderData.equipo}`} />
       
       <div className="dashboard-main">
         <aside className="sidebar-left">
@@ -157,7 +183,7 @@ function Lider() {
 
             <div className="nav-divider"></div>
 
-            <button className="nav-item" onClick={logout}>
+            <button className="nav-item" onClick={handleLogout}>
               🚪 <span>Cerrar Sesión</span>
             </button>
 

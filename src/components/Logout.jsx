@@ -12,7 +12,7 @@ function Logout() {
     setIsLoggingOut(true);
     try {
       await logout();
-      navigate('/login');
+      navigate('/login', { replace: true });
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
       alert('Hubo un problema al cerrar sesión. Intenta nuevamente.');

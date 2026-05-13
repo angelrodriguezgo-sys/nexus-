@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { FaUsers, FaUserTie, FaUserCog, FaUser } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaPerson } from 'react-icons/fa6';
-import DashboardHeader from '../../components/DashboardHeader';
+import HeaderInt from '../../components/HeaderInt';
 import Calendario from '../../components/Calendario';
+import PanelAdmin from '../../pages/PanelAdmin';
 import '../../Estilos/Ceo.css';
 import { useAuth } from '../../context/AuthContext';
 
@@ -14,13 +15,39 @@ function Director() {
   const navigate = useNavigate();
   const [seccionActiva, setSeccionActiva] = useState('directores');
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login', { replace: true });
+    } catch (err) {
+      console.error('Error al cerrar sesión:', err);
+      alert('Hubo un problema al cerrar sesión. Intenta nuevamente.');
+    }
+  };
+
   // ✅ Redirigir si no hay usuario o no es director
   useEffect(() => {
     if (!loading && !user) {
       navigate('/login');
+      return;
     }
-    if (!loading && user && user.rol !== 'director') {
-      navigate('/');
+    if (!loading && user && user.rol) {
+      const role = String(user.rol || '').toLowerCase();
+      if (role !== 'director') {
+        switch(role) {
+          case 'ceo':
+            navigate('/CeoPage');
+            break;
+          case 'lider':
+            navigate('/LiderPage');
+            break;
+          case 'empleado':
+            navigate('/EmpleadoPage');
+            break;
+          default:
+            navigate('/login');
+        }
+      }
     }
   }, [user, loading, navigate]);
 
@@ -129,7 +156,7 @@ function Director() {
 
   return (
     <div className="dashboard-container director">
-      <DashboardHeader empresaData={empresaData} userRole={`DIRECTOR - ${empresaData.area}`} />
+      <HeaderInt empresaData={empresaData} userRole={`DIRECTOR - ${empresaData.area}`} />
       
       <div className="dashboard-main">
         <aside className="sidebar-left">
@@ -168,7 +195,7 @@ function Director() {
 
             <div className="nav-divider"></div>
 
-            <button className="nav-item" onClick={logout}>
+            <button className="nav-item" onClick={handleLogout}>
               🚪 <span>Cerrar Sesión</span>
             </button>
 

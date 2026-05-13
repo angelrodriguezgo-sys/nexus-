@@ -27,21 +27,18 @@ function App() {
 
   return (
     <>  
-    <AuthProvider>
-      <TestFirebase />
-    </AuthProvider>
+   
 
        <Menu/>
         <Routes>
             <Route path='/' element={<Home/>}/>
             <Route path='/precios' element={<Precio/> }/>
             <Route path='/contacto' element={<Contacto/>}/>
-           
             <Route path="/registro" element={<Registro/>} /> {/* Registrar empresa */}
-            <Route path='/login' element={<Login/>} />
-            <Route path='/logout' element={<Logout />} /> 
-            
             <Route path='/UserRegister' element={<UserRegister/>} /> {/*  registro de usuarios */}
+            <Route path='/login' element={<Login/>} />
+
+            <Route path='/logout' element={<Logout />} /> 
             <Route path='/CeoPage' element={  <CeoPage/> } />
             <Route path='/DirectorPage' element={<Director/>} />
             <Route path='/LiderPage' element={<Lider/>} />

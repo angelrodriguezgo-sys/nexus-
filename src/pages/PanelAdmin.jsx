@@ -1,34 +1,55 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import HeaderInt from '../components/HeaderInt';
-import { auth, db, collection, addDoc, doc, updateDoc, getDocs, query, where, setDoc } from '../services/firebase/Firebase';
+import { auth, db, collection, addDoc, doc, updateDoc, getDocs, query, where, setDoc, deleteDoc } from '../services/firebase/Firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import '../Estilos/PanelAdmin.css';
 
 function PanelAdmin({ empresaData: empresaDataProp }) {
+  const { empresa: authEmpresa, user: authUser } = useAuth();
+  const location = useLocation();
+  const empresaDataState = location.state?.empresaData;
+
   const [trabajadores, setTrabajadores] = useState([]);
   const [loading, setLoading] = useState(false);
   const [registrando, setRegistrando] = useState(false);
 
   // ✅ Datos de la empresa
   const [empresa, setEmpresa] = useState({
-    id: empresaDataProp?.id || 'empresa_001',
-    nombre: empresaDataProp?.nombre || 'Mi Empresa',
-    nit: empresaDataProp?.nit || '123456789',
-    plan_id: empresaDataProp?.plan_id || 'plan_basico',
-    max_usuarios: empresaDataProp?.max_usuarios || 10,
-    usuarios_actuales: empresaDataProp?.usuarios_actuales || 0
+    id: empresaDataProp?.id || empresaDataState?.id || authEmpresa?.id || authUser?.empresa_id || 'empresa_001',
+    nombre: empresaDataProp?.nombre || empresaDataState?.nombre || authEmpresa?.nombre || 'Mi Empresa',
+    nit: empresaDataProp?.nit || empresaDataState?.nit || authEmpresa?.nit || '123456789',
+    plan_id: empresaDataProp?.plan_id || empresaDataState?.plan_id || authEmpresa?.plan_id || 'plan_basico',
+    max_usuarios: empresaDataProp?.max_usuarios || empresaDataState?.max_usuarios || authEmpresa?.max_usuarios || 10,
+    usuarios_actuales: empresaDataProp?.usuarios_actuales || empresaDataState?.usuarios_actuales || authEmpresa?.usuarios_actuales || 0
   });
+
+  useEffect(() => {
+    const resolvedEmpresa = {
+      id: empresaDataProp?.id || empresaDataState?.id || authEmpresa?.id || authUser?.empresa_id || 'empresa_001',
+      nombre: empresaDataProp?.nombre || empresaDataState?.nombre || authEmpresa?.nombre || 'Mi Empresa',
+      nit: empresaDataProp?.nit || empresaDataState?.nit || authEmpresa?.nit || '123456789',
+      plan_id: empresaDataProp?.plan_id || empresaDataState?.plan_id || authEmpresa?.plan_id || 'plan_basico',
+      max_usuarios: empresaDataProp?.max_usuarios || empresaDataState?.max_usuarios || authEmpresa?.max_usuarios || 10,
+      usuarios_actuales: empresaDataProp?.usuarios_actuales || empresaDataState?.usuarios_actuales || authEmpresa?.usuarios_actuales || 0
+    };
+    setEmpresa(resolvedEmpresa);
+  }, [empresaDataProp, empresaDataState, authEmpresa, authUser]);
 
   const [puedeAgregar, setPuedeAgregar] = useState(true);
   const [usuariosRestantes, setUsuariosRestantes] = useState(empresa.max_usuarios - empresa.usuarios_actuales);
 
   const [formData, setFormData] = useState({
     nombre: '',
+    apellido: '',
     email: '',
+    password: '',
+    confirmPassword: '',
     telefono: '',
     cargo: '',
     departamento: '',
-    rol: 'Empleado',
+    rol: 'empleado',
     salario: '',
     fechaContratacion: '',
     estado: 'Activo',
@@ -79,25 +100,32 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
   };
 
   // ===== REGISTRAR USUARIO EN FIREBASE AUTH + FIRESTORE =====
-  const registrarUsuarioEnFirebase = async (email, nombre, rol, telefono) => {
+  const validarEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  };
+
+  const registrarUsuarioEnFirebase = async (email, password, nombre, apellido, rol, telefono) => {
     try {
+      const emailNormalizado = email.trim().toLowerCase();
       // 1. Crear usuario en Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, email, DEFAULT_PASSWORD);
+      const userCredential = await createUserWithEmailAndPassword(auth, emailNormalizado, password);
       const uid = userCredential.user.uid;
 
       // 2. Guardar datos del usuario en Firestore (colección 'usuarios')
       await setDoc(doc(db, 'usuarios', uid), {
         uid: uid,
         nombre: nombre,
+        apellido: apellido || '',
         email: email,
         telefono: telefono || '',
         rol: rol,
+        empresa_id: empresa.id,
         empresaId: empresa.id,
         empresaNombre: empresa.nombre,
         empresaNIT: empresa.nit,
         estado: 'Activo',
         fechaRegistro: new Date().toISOString(),
-        passwordDefault: true, // Indica que usa contraseña por defecto
+        passwordDefault: password === DEFAULT_PASSWORD,
       });
 
       return { success: true, uid };
@@ -114,13 +142,36 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
   const handleGuardar = async (e) => {
     e.preventDefault();
     
+    if (editingId) {
+      alert('⚠️ Estás editando un trabajador. Usa el botón Actualizar para guardar cambios.');
+      return;
+    }
+
     if (!puedeAgregar) {
       alert(`❌ Límite alcanzado. Tu plan solo permite ${empresa.max_usuarios} usuarios.`);
       return;
     }
     
-    if (!formData.nombre || !formData.email) {
-      alert('❌ Por favor completa los campos requeridos (Nombre y Email)');
+    if (!formData.nombre || !formData.apellido || !formData.email) {
+      alert('❌ Por favor completa los campos requeridos (Nombre, Apellido y Email)');
+      return;
+    }
+
+    if (!validarEmail(formData.email)) {
+      alert('❌ El email ingresado no tiene un formato válido.');
+      return;
+    }
+
+    if (!formData.password) {
+      alert('❌ Debes asignar una contraseña al nuevo empleado.');
+      return;
+    }
+    if (formData.password.length < 6) {
+      alert('❌ La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      alert('❌ Las contraseñas no coinciden.');
       return;
     }
 
@@ -130,7 +181,9 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
       // 1. Registrar en Firebase Authentication y Firestore
       const { uid } = await registrarUsuarioEnFirebase(
         formData.email,
+        editingId ? (formData.password || DEFAULT_PASSWORD) : formData.password,
         formData.nombre,
+        formData.apellido,
         formData.rol,
         formData.telefono
       );
@@ -139,6 +192,7 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
       const trabajadorData = {
         uid: uid,
         nombre: formData.nombre,
+        apellido: formData.apellido,
         email: formData.email,
         telefono: formData.telefono,
         cargo: formData.cargo,
@@ -151,7 +205,7 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
         empresaId: empresa.id,
         empresaNombre: empresa.nombre,
         fecha_registro: new Date().toISOString(),
-        passwordDefault: true
+        passwordDefault: editingId ? false : (formData.password === DEFAULT_PASSWORD)
       };
 
       const docRef = await addDoc(collection(db, 'trabajadores'), trabajadorData);
@@ -160,7 +214,7 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
       setTrabajadores([...trabajadores, { id: docRef.id, ...trabajadorData }]);
       handleLimpiar();
       
-      alert(`✅ ¡Trabajador registrado exitosamente!\n📧 Email: ${formData.email}\n🔑 Contraseña temporal: ${DEFAULT_PASSWORD}\n⚠️ Recomiende cambiar la contraseña en el primer inicio.`);
+      alert(`✅ ¡Trabajador registrado exitosamente!\n📧 Email: ${formData.email}\n🔑 Contraseña: ${editingId ? 'Sin cambio' : formData.password}\n⚠️ Recomiende cambiar la contraseña en el primer inicio.`);
       
     } catch (error) {
       alert(`❌ Error: ${error.message}`);
@@ -181,6 +235,7 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
       const trabajadorRef = doc(db, 'trabajadores', editingId);
       await updateDoc(trabajadorRef, {
         nombre: formData.nombre,
+        apellido: formData.apellido,
         telefono: formData.telefono,
         cargo: formData.cargo,
         departamento: formData.departamento,
@@ -195,6 +250,7 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
       if (trabajadorExistente?.uid) {
         await updateDoc(doc(db, 'usuarios', trabajadorExistente.uid), {
           nombre: formData.nombre,
+          apellido: formData.apellido,
           telefono: formData.telefono,
           rol: formData.rol,
         });
@@ -253,20 +309,23 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
 
   const handleLimpiar = () => {
     setFormData({
-      nombre: '', email: '', telefono: '', cargo: '', departamento: '',
-      rol: 'Empleado', salario: '', fechaContratacion: '', estado: 'Activo', direccion: '',
+      nombre: '', apellido: '', email: '', password: '', confirmPassword: '', telefono: '', cargo: '', departamento: '',
+      rol: 'empleado', salario: '', fechaContratacion: '', estado: 'Activo', direccion: '',
     });
     setEditingId(null);
   };
 
   const handleEditar = (trabajador) => {
     setFormData({
-      nombre: trabajador.nombre, 
-      email: trabajador.email, 
+      nombre: trabajador.nombre,
+      apellido: trabajador.apellido || '', 
+      email: trabajador.email,
+      password: '',
+      confirmPassword: '',
       telefono: trabajador.telefono || '',
       cargo: trabajador.cargo || '', 
       departamento: trabajador.departamento || '', 
-      rol: trabajador.rol || 'Empleado',
+      rol: trabajador.rol?.toLowerCase() || 'empleado',
       salario: trabajador.salario || '', 
       fechaContratacion: trabajador.fechaContratacion || '',
       estado: trabajador.estado || 'Activo', 
@@ -329,9 +388,15 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
             </div>
             
             <form onSubmit={(e) => e.preventDefault()}>
-              <div className="form-group">
-                <label>Nombre Completo *</label>
-                <input type="text" name="nombre" value={formData.nombre} onChange={handleInputChange} required disabled={registrando} />
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Nombre *</label>
+                  <input type="text" name="nombre" value={formData.nombre} onChange={handleInputChange} required disabled={registrando} />
+                </div>
+                <div className="form-group">
+                  <label>Apellido *</label>
+                  <input type="text" name="apellido" value={formData.apellido} onChange={handleInputChange} required disabled={registrando} />
+                </div>
               </div>
 
               <div className="form-row">
@@ -345,6 +410,19 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
                   <input type="tel" name="telefono" value={formData.telefono} onChange={handleInputChange} />
                 </div>
               </div>
+
+              {!editingId && (
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Contraseña *</label>
+                    <input type="password" name="password" value={formData.password} onChange={handleInputChange} required disabled={registrando} />
+                  </div>
+                  <div className="form-group">
+                    <label>Confirmar Contraseña *</label>
+                    <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} required disabled={registrando} />
+                  </div>
+                </div>
+              )}
 
               <div className="form-row">
                 <div className="form-group">
@@ -366,9 +444,9 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
                 <div className="form-group">
                   <label>Rol de Sistema *</label>
                   <select name="rol" value={formData.rol} onChange={handleInputChange}>
-                    <option>Director</option>
-                    <option>Lider</option>
-                    <option>Empleado</option>
+                    <option value="director">Director</option>
+                    <option value="lider">Lider</option>
+                    <option value="empleado">Empleado</option>
                   </select>
                 </div>
                 <div className="form-group">
@@ -378,7 +456,7 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
               </div>
 
               <div className="form-actions">
-                <button type="button" className="btn btn-primary" onClick={handleGuardar} disabled={registrando || (!puedeAgregar && !editingId)}>
+                <button type="button" className="btn btn-primary" onClick={handleGuardar} disabled={registrando || !puedeAgregar || editingId !== null}>
                   {registrando ? '⏳ Registrando...' : '💾 Guardar'}
                 </button>
                 <button type="button" className="btn btn-warning" onClick={handleActualizar}>✏️ Actualizar</button>
