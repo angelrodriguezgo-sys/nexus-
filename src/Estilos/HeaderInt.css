@@ -157,6 +157,54 @@
   animation: pulse 2s infinite;
 }
 
+
+        .user-role-badge {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          border-radius: 30px;
+          font-size: 12px;
+          font-weight: bold;
+          color: white;
+          margin-right: 8px;
+        }
+        
+        .user-role-badge .role-icon {
+          font-size: 14px;
+        }
+        
+        .user-role-badge .role-name {
+          letter-spacing: 0.5px;
+        }
+        
+        .logo-link {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          font-size: 1.1em;
+          font-weight: bold;
+          color: #1A2B3C;
+          text-decoration: none;
+        }
+        
+        .logo-link:hover {
+          opacity: 0.8;
+        }
+        
+        .logo-text {
+          color: #1A2B3C;
+        }
+        
+        .header-logo-icon {
+          font-size: 1.4em;
+          color: #3498DB;
+        }
+
 @keyframes pulse {
   0%, 100% {
     box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4);

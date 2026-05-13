@@ -1,44 +1,47 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+// users/ceo/CeoPage.jsx
+import React, { useState, useEffect } from 'react';
 import { 
   FaUsers, FaUserTie, FaUserCog, FaUser
 } from 'react-icons/fa';
 import { FaPerson } from 'react-icons/fa6';
+import { useNavigate, Link } from 'react-router-dom';  // ✅ Importar Link también
 
-import DashboardHeader from '../../components/DashboardHeader';
+import HeaderInt from '../../components/HeaderInt';
 import Calendario from '../../components/Calendario';
 import '../../Estilos/Ceo.css';
+import { useAuth } from '../../context/AuthContext';
 
-function DashboardEmpresa() {
+function CeoPage() {
+  const { user, empresa, loading, logout } = useAuth();
+  const navigate = useNavigate();
   const [seccionActiva, setSeccionActiva] = useState('directores');
-  const userRole = 'CEO'; // Este valor debería venir de la autenticación del usuario
 
+  useEffect(() => {
+    if (!loading && !user) navigate('/login');
+    if (!loading && user && user.rol !== 'ceo') navigate('/dashboard');
+  }, [user, loading, navigate]);
 
-  // Datos de empresa
+  if (loading) return <div className="loading">Cargando...</div>;
+  if (!user || user.rol !== 'ceo') return null;
+
   const empresaData = {
-    nombre: "MI EMPRESA S.A.S.",
-    nit: "900.123.456-7"
+    id: empresa?.id || user?.empresa_id,
+    nombre: empresa?.nombre || 'Mi Empresa',
+    nit: empresa?.nit || 'NIT no registrado',
+    plan_id: empresa?.plan_id || 'plan_basico',
+    max_usuarios: empresa?.max_usuarios || 10,
+    usuarios_actuales: empresa?.usuarios_actuales || 0,
+    rol: 'ceo',
+    area: 'General'
   };
 
-  // Contenido dinámico según la sección activa
+  // ✅ Función para navegar al panel admin
+  const irAPanelAdmin = () => {
+    navigate('/panel-admin', { state: { empresaData } });
+  };
+
   const renderContenidoCentral = () => {
     switch(seccionActiva) {
-      case 'Ceo':
-              return (
-                <div className="seccion-contenido">
-                  <h3>CEO's</h3>
-                  <div className="tarjetas-grid">
-                    {[1, 2, 3, 4].map(i => (
-                      <div key={i} className="tarjeta-persona ceo">
-                        <FaUserCog className="tarjeta-icono" />
-                        <h4>CEO {i}</h4>
-                        <p>Equipo: {i === 1 ? 'Ventas' : i === 2 ? 'Marketing' : 'Operaciones'}</p>
-                        <span className="badge">Activo</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              );
       case 'directores':
         return (
           <div className="seccion-contenido">
@@ -58,13 +61,13 @@ function DashboardEmpresa() {
       case 'lideres':
         return (
           <div className="seccion-contenido">
-            <h3>Líderes de Equipo</h3>
+            <h3>Líderes</h3>
             <div className="tarjetas-grid">
               {[1, 2, 3, 4].map(i => (
                 <div key={i} className="tarjeta-persona lider">
                   <FaUserCog className="tarjeta-icono" />
                   <h4>Líder {i}</h4>
-                  <p>Equipo: {i === 1 ? 'Ventas' : i === 2 ? 'Soporte' : i === 3 ? 'Desarrollo' : 'Diseño'}</p>
+                  <p>Equipo: {i === 1 ? 'Ventas' : i === 2 ? 'Soporte' : 'Desarrollo'}</p>
                   <span className="badge">Activo</span>
                 </div>
               ))}
@@ -80,98 +83,64 @@ function DashboardEmpresa() {
                 <div key={i} className="tarjeta-persona empleado">
                   <FaUser className="tarjeta-icono" />
                   <h4>Empleado {i}</h4>
-                  <p>Puesto: {i === 1 ? 'Desarrollador' : i === 2 ? 'Diseñador' : i === 3 ? 'Analista' : i === 4 ? 'Soporte' : 'Ventas'}</p>
+                  <p>Puesto: Desarrollador</p>
                   <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
           </div>
         );
-      case 'PanelAdmin':
-        return (
-          <div className="seccion-contenido">
-            <Link to="/PanelAdmin" className="boton-panel-admin">Panel de Administracion</Link>  {/* agregar apertura de nueva pagina */}
-          </div>
-        ); 
-      default:
-        return null;
+      default: return null;
     }
   };
 
   return (
-    <div className="dashboard-container ceo">
-      {/* Header con título y NIT */}
-      <DashboardHeader empresaData={empresaData} />
-
-      {/* Contenido principal */}
+    <div className="dashboard-container">
+      <HeaderInt empresaData={empresaData} userRole="CEO" />
+      
       <div className="dashboard-main">
-        {/* Barra lateral izquierda - Navegación */}
         <aside className="sidebar-left">
           <nav className="nav-menu">
-              <button 
-              className={`nav-item ${seccionActiva === 'ceo' ? 'activo' : ''}`}
-              onClick={() => setSeccionActiva('ceo')}
-            >
-              <FaUserTie className="nav-icon" />
-              <span>Ceo</span>
+            {/* ✅ BOTÓN CORREGIDO - Usando onClick */}
+            <button className="seccion-contenido">
+                <Link to="/PanelAdmin" className="boton-panel-admin">Panel de Administracion</Link>  {/* agregar apertura de nueva pagina */}
             </button>
+            
             <button 
-              className={`nav-item ${seccionActiva === 'directores' ? 'activo' : ''}`}
+              className={`nav-item ${seccionActiva === 'directores' ? 'activo' : ''}`} 
               onClick={() => setSeccionActiva('directores')}
             >
-              <FaUserTie className="nav-icon" />
-              <span>Directores</span>
+              <FaUserTie className="nav-icon" /> <span>Directores</span>
             </button>
-            
             <button 
-              className={`nav-item ${seccionActiva === 'lideres' ? 'activo' : ''}`}
+              className={`nav-item ${seccionActiva === 'lideres' ? 'activo' : ''}`} 
               onClick={() => setSeccionActiva('lideres')}
             >
-              <FaUserCog className="nav-icon" />
-              <span>Líderes</span>
+              <FaUserCog className="nav-icon" /> <span>Líderes</span>
             </button>
-            
             <button 
-              className={`nav-item ${seccionActiva === 'empleados' ? 'activo' : ''}`}
+              className={`nav-item ${seccionActiva === 'empleados' ? 'activo' : ''}`} 
               onClick={() => setSeccionActiva('empleados')}
             >
-              <FaUsers className="nav-icon" />
-              <span>Empleados</span>
+              <FaUsers className="nav-icon" /> <span>Empleados</span>
             </button>
-
-            <button 
-              className={`nav-item ${seccionActiva === 'PanelAdmin' ? 'activo' : ''}`}
-              onClick={() => setSeccionActiva('PanelAdmin')}
-            >
-              <FaPerson className="nav-icon" />
-              <span>Panel Administrador</span>
-            </button>
-
             <div className="nav-divider"></div>
-
-            <div className="nav-stats">
-              <div className="stat-item">
-                <span className="stat-label">Total:</span>
-                <span className="stat-value">12</span>
-              </div>
-            </div>
+            <button className="nav-item" onClick={logout}>
+              🚪 <span>Cerrar Sesión</span>
+            </button>
           </nav>
         </aside>
-
-        {/* Espacio central - Contenido dinámico */}
+        
         <main className="content-center">
           {renderContenidoCentral()}
         </main>
-
-        {/* Barra lateral derecha - Calendario */}
+        
         <aside className="sidebar-right">
           <Calendario />
         </aside>
       </div>
-
-    
     </div>
   );
 }
 
-export default DashboardEmpresa;
+export default CeoPage;

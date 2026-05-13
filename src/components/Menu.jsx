@@ -10,7 +10,7 @@ function  Menu(){
         <nav className="header" >
             <Logo/>
             <Link to="/"> <FaHome/>Nosotros</Link>
-            <Link to="/precios"> <FaCalendar/>Precios</Link>
+            <Link to="/precios"> <FaCalendar/>Planes</Link>
             <Link to="/contacto"> <FaPhone/> Contacto</Link>
             <InicioSesion/>
         </nav>

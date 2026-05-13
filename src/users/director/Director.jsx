@@ -1,28 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaUsers, FaUserTie, FaUserCog, FaUser } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaPerson } from 'react-icons/fa6';
 import DashboardHeader from '../../components/DashboardHeader';
 import Calendario from '../../components/Calendario';
 import '../../Estilos/Ceo.css';
+import { useAuth } from '../../context/AuthContext';
+
+
 
 function Director() {
-  const [fechaActual, setFechaActual] = useState(new Date());
+  const { user, empresa, loading, logout } = useAuth();
+  const navigate = useNavigate();
   const [seccionActiva, setSeccionActiva] = useState('directores');
-  const userRole = 'Director'; // Este valor debería venir de la autenticación del usuario
-    
-  // Datos de ejemplo
+
+  // ✅ Redirigir si no hay usuario o no es director
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+    }
+    if (!loading && user && user.rol !== 'director') {
+      navigate('/');
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return <div className="loading-container">Cargando...</div>;
+  }
+
+  if (!user || user.rol !== 'director') {
+    return null;
+  }
+
+  // ✅ DATOS REALES DE LA EMPRESA DESDE AUTHCONTEXT
   const empresaData = {
-    nombre: "MI EMPRESA S.A.S.",
-    nit: "900.123.456-7"
+    id: empresa?.id || user?.empresa_id,
+    nombre: empresa?.nombre || 'Mi Empresa',
+    nit: empresa?.nit || 'NIT no registrado',
+    plan_id: empresa?.plan_id || 'plan_profesional',
+    max_usuarios: empresa?.max_usuarios || 50,
+    usuarios_actuales: empresa?.usuarios_actuales || 0,
+    rol: 'director',
+    area: user?.area || 'Ventas',
+    soloMiArea: true
   };
 
-  // Función para cambiar mes
+  // ✅ Funciones del calendario
+  const [fechaActual, setFechaActual] = useState(new Date());
+
   const cambiarMes = (incremento) => {
     setFechaActual(new Date(fechaActual.getFullYear(), fechaActual.getMonth() + incremento, 1));
   };
 
-  // Obtener días del mes
   const getDiasDelMes = () => {
     const año = fechaActual.getFullYear();
     const mes = fechaActual.getMonth();
@@ -30,18 +59,10 @@ function Director() {
     const ultimoDia = new Date(año, mes + 1, 0).getDate();
     
     const dias = [];
-    // Ajustar para que la semana empiece en lunes (1) en lugar de domingo (0)
     const primerDiaAjustado = primerDia === 0 ? 6 : primerDia - 1;
     
-    // Días vacíos antes del primer día del mes
-    for (let i = 0; i < primerDiaAjustado; i++) {
-      dias.push(null);
-    }
-    
-    // Días del mes
-    for (let i = 1; i <= ultimoDia; i++) {
-      dias.push(i);
-    }
+    for (let i = 0; i < primerDiaAjustado; i++) dias.push(null);
+    for (let i = 1; i <= ultimoDia; i++) dias.push(i);
     
     return dias;
   };
@@ -49,64 +70,58 @@ function Director() {
   const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
   const diasDelMes = getDiasDelMes();
 
-  // Contenido dinámico según la sección activa
   const renderContenidoCentral = () => {
     switch(seccionActiva) {
-      case 'Ceo':
-        return (
-          <div className="seccion-contenido">
-            <h3>Ceo's</h3>
-            <div className="tarjetas-grid">
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="tarjeta-persona lider">
-                  <FaUserCog className="tarjeta-icono" />
-                  <h4>Ceo's {i}</h4>
-                  <p>Equipo: {i === 1 ? 'Ventas' : i === 2 ? 'Marketing' : 'Operaciones'}</p> {/*Ceo's team */}
-                  <span className="badge">Activo</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
+      case 'admin':
+        return <PanelAdmin empresaData={empresaData} />;
       case 'directores':
         return (
           <div className="seccion-contenido">
-            <h3>Directores</h3>
+            <h3>Directores - Área {empresaData.area}</h3>
             <div className="tarjetas-grid">
-              {[1, 2, 3].map(i => (
+              {[1].map(i => (
                 <div key={i} className="tarjeta-persona director">
                   <FaUserTie className="tarjeta-icono" />
                   <h4>Director {i}</h4>
-                  <p>Área: {i === 1 ? 'Ventas' : i === 2 ? 'Marketing' : 'Operaciones'}</p>
+                  <p>Área: {empresaData.area}</p>
                   <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
           </div>
         );
-      
+      case 'lideres':
+        return (
+          <div className="seccion-contenido">
+            <h3>Líderes a cargo</h3>
+            <div className="tarjetas-grid">
+              {[1, 2].map(i => (
+                <div key={i} className="tarjeta-persona lider">
+                  <FaUserCog className="tarjeta-icono" />
+                  <h4>Líder {i}</h4>
+                  <p>Equipo: {empresaData.area} {i}</p>
+                  <span className="badge">Activo</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
       case 'empleados':
         return (
           <div className="seccion-contenido">
-            <h3>Empleados</h3>
+            <h3>Empleados del área</h3>
             <div className="tarjetas-grid">
-              {[1, 2, 3, 4, 5].map(i => (
+              {[1, 2, 3, 4].map(i => (
                 <div key={i} className="tarjeta-persona empleado">
                   <FaUser className="tarjeta-icono" />
                   <h4>Empleado {i}</h4>
-                  <p>Puesto: {i === 1 ? 'Desarrollador' : i === 2 ? 'Diseñador' : i === 3 ? 'Analista' : i === 4 ? 'Soporte' : 'Ventas'}</p>
+                  <p>Puesto: {i === 1 ? 'Analista' : 'Asistente'}</p>
                   <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
           </div>
         );
-      case 'PanelAdmin':
-        return (
-          <div className="seccion-contenido">
-            <Link to="/PanelAdmin" className="boton-panel-admin">Panel de Administracion</Link> 
-          </div>
-        ); 
       default:
         return null;
     }
@@ -114,19 +129,17 @@ function Director() {
 
   return (
     <div className="dashboard-container director">
-      <DashboardHeader empresaData={empresaData} />
-
-      {/* Contenido principal */}
+      <DashboardHeader empresaData={empresaData} userRole={`DIRECTOR - ${empresaData.area}`} />
+      
       <div className="dashboard-main">
-        {/* Barra lateral izquierda - Navegación */}
         <aside className="sidebar-left">
           <nav className="nav-menu">
             <button 
-              className={`nav-item ${seccionActiva === 'Ceo' ? 'activo' : ''}`}
-              onClick={() => setSeccionActiva('Ceo')}
+              className={`nav-item ${seccionActiva === 'admin' ? 'activo' : ''}`}
+              onClick={() => setSeccionActiva('admin')}
             >
-              <FaUserCog className="nav-icon" />
-              <span>CEO</span>
+              <FaPerson className="nav-icon" />
+              <span>Admin Mi Área</span>
             </button>
 
             <button 
@@ -134,7 +147,7 @@ function Director() {
               onClick={() => setSeccionActiva('directores')}
             >
               <FaUserTie className="nav-icon" />
-              <span>Directores</span>
+              <span>Mi Dirección</span>
             </button>
 
             <button 
@@ -142,7 +155,7 @@ function Director() {
               onClick={() => setSeccionActiva('lideres')}
             >
               <FaUserCog className="nav-icon" />
-              <span>Líderes</span>
+              <span>Mis Líderes</span>
             </button>
             
             <button 
@@ -150,42 +163,35 @@ function Director() {
               onClick={() => setSeccionActiva('empleados')}
             >
               <FaUsers className="nav-icon" />
-              <span>Empleados</span>
-            </button>
-
-            <button 
-              className={`nav-item ${seccionActiva === 'PanelAdmin' ? 'activo' : ''}`}
-              onClick={() => setSeccionActiva('PanelAdmin')}
-            >
-              <FaPerson className="nav-icon" />
-              <span>Panel Administracion</span>
+              <span>Mis Empleados</span>
             </button>
 
             <div className="nav-divider"></div>
 
+            <button className="nav-item" onClick={logout}>
+              🚪 <span>Cerrar Sesión</span>
+            </button>
+
             <div className="nav-stats">
               <div className="stat-item">
-                <span className="stat-label">Total:</span>
-                <span className="stat-value">12</span>
+                <span className="stat-label">Mi Área:</span>
+                <span className="stat-value">{empresaData.area}</span>
               </div>
             </div>
           </nav>
         </aside>
 
-        {/* Espacio central - Contenido dinámico */}
         <main className="content-center">
           {renderContenidoCentral()}
         </main>
 
-        {/* Barra lateral derecha - Calendario */}
         <aside className="sidebar-right">
           <Calendario />
         </aside>
       </div>
-
-    
     </div>
   );
 }
+
 
 export default Director;

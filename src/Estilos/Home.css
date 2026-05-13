@@ -8,24 +8,20 @@
     --light: #ECF0F1;
     --dark: #2C3E50;
     --success: #27AE60;
-    --white: #FFFFFF;        /* ← AÑADIDO */
-    --gray-light: #BDC3C7;   /* ← AÑADIDO */
+    --white: #FFFFFF;        
+    --gray-light: #BDC3C7;   
     --text-dark: #2C3E50;
     --text-gray: #666666;
 }
 
-/* ========================================
-   RESET Y BASE
-   ======================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ========================================
-   HOME SECTION - QUIÉNES SOMOS
-   ======================================== */
+
 .home-section {
     max-width: 1200px;
     padding: 80px 20px;
@@ -117,9 +113,7 @@
     font-size: 0.95rem;
 }
 
-/* ========================================
-   VISIÓN SECTION
-   ======================================== */
+
 .home-section .vision-section {
     background: linear-gradient(135deg, #667eea 0%, #c3cfe2 100%);
     border-radius: 50px;
@@ -163,7 +157,6 @@
     font-weight: 500;
 }
 
-/* Estadísticas */
 .home-section .vision-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -192,9 +185,7 @@
     font-size: 0.9rem;
 }
 
-/* ========================================
-   MISIÓN SECTION
-   ======================================== */
+
 .home-section .mision-section {
     background: linear-gradient(135deg, #daa7dc 0%, #65b9f1 100%);
     margin: 40px 0;
@@ -256,9 +247,7 @@
     border-left: 4px solid white;
 }
 
-/* ========================================
-   CTA (LLAMADA A LA ACCIÓN)
-   ======================================== */
+
 .home-section .cta-container {
     text-align: center;
     padding: 20px;
@@ -279,7 +268,7 @@
 
 
 
-.badge {
+.home-section .badge {
   background-color: var(--success);
   color: var(--white);
   padding: 5px 15px;
@@ -287,12 +276,14 @@
   font-size: 14px;
   margin-left: 15px;
   display: inline-block;
+  position: static;
+  width: auto;
+  height: auto;
+  vertical-align: middle;
 }
 
 
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
+
 /* Tablets (768px) */
 @media (max-width: 768px) {
     .home-section {
@@ -403,9 +394,7 @@
     }
 }
 
-/* ========================================
-   ANIMACIONES
-   ======================================== */
+
 @keyframes fadeInUp {
     from {
         opacity: 0;

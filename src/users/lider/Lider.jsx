@@ -5,25 +5,54 @@ import { FaPerson } from 'react-icons/fa6';
 import DashboardHeader from '../../components/DashboardHeader';
 import Calendario from '../../components/Calendario';
 import '../../Estilos/Ceo.css';
+import { useAuth } from '../../context/AuthContext';
 
 function Lider() {
-  const [fechaActual, setFechaActual] = useState(new Date());
-  const [seccionActiva, setSeccionActiva] = useState('directores');
-  const userRole = 'Líder'; // Este valor debería venir de la autenticación del usuario
+  const { user, empresa, loading, logout } = useAuth();
+  const navigate = useNavigate();
+  const [seccionActiva, setSeccionActiva] = useState('empleados');
 
+  // ✅ Redirigir si no hay usuario o no es líder
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+    }
+    if (!loading && user && user.rol !== 'lider') {
+      navigate('/dashboard');
+    }
+  }, [user, loading, navigate]);
 
-  // Datos de ejemplo
+  if (loading) {
+    return <div className="loading-container">Cargando...</div>;
+  }
+
+  if (!user || user.rol !== 'lider') {
+    return null;
+  }
+
+  // ✅ DATOS REALES DE LA EMPRESA DESDE AUTHCONTEXT
   const empresaData = {
-    nombre: "MI EMPRESA S.A.S.",
-    nit: "900.123.456-7"
+    nombre: empresa?.nombre || 'Mi Empresa',
+    nit: empresa?.nit || 'NIT no registrado',
+    plan_id: empresa?.plan_id || 'plan_profesional'
   };
 
-  // Función para cambiar mes
+  // ✅ DATOS DEL LÍDER LOGUEADO
+  const liderData = {
+    nombre: user?.nombre || '',
+    apellido: user?.apellido || '',
+    email: user?.email,
+    equipo: user?.equipo || 'General',
+    area: user?.area || 'Operaciones'
+  };
+
+  // ✅ Funciones del calendario
+  const [fechaActual, setFechaActual] = useState(new Date());
+
   const cambiarMes = (incremento) => {
     setFechaActual(new Date(fechaActual.getFullYear(), fechaActual.getMonth() + incremento, 1));
   };
 
-  // Obtener días del mes
   const getDiasDelMes = () => {
     const año = fechaActual.getFullYear();
     const mes = fechaActual.getMonth();
@@ -31,18 +60,10 @@ function Lider() {
     const ultimoDia = new Date(año, mes + 1, 0).getDate();
     
     const dias = [];
-    // Ajustar para que la semana empiece en lunes (1) en lugar de domingo (0)
     const primerDiaAjustado = primerDia === 0 ? 6 : primerDia - 1;
     
-    // Días vacíos antes del primer día del mes
-    for (let i = 0; i < primerDiaAjustado; i++) {
-      dias.push(null);
-    }
-    
-    // Días del mes
-    for (let i = 1; i <= ultimoDia; i++) {
-      dias.push(i);
-    }
+    for (let i = 0; i < primerDiaAjustado; i++) dias.push(null);
+    for (let i = 1; i <= ultimoDia; i++) dias.push(i);
     
     return dias;
   };
@@ -50,36 +71,32 @@ function Lider() {
   const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
   const diasDelMes = getDiasDelMes();
 
-  // Contenido dinámico según la sección activa
   const renderContenidoCentral = () => {
     switch(seccionActiva) {
-      
       case 'directores':
         return (
           <div className="seccion-contenido">
-            <h3>Directores</h3>
+            <h3>Mi Director</h3>
             <div className="tarjetas-grid">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="tarjeta-persona director">
-                  <FaUserTie className="tarjeta-icono" />
-                  <h4>Director {i}</h4>
-                  <p>Área: {i === 1 ? 'Ventas' : i === 2 ? 'Marketing' : 'Operaciones'}</p>
-                  <span className="badge">Activo</span>
-                </div>
-              ))}
+              <div className="tarjeta-persona director">
+                <FaUserTie className="tarjeta-icono" />
+                <h4>Director</h4>
+                <p>Área: {liderData.area}</p>
+                <span className="badge">Activo</span>
+              </div>
             </div>
           </div>
         );
       case 'lideres':
         return (
           <div className="seccion-contenido">
-            <h3>Líderes de Equipo</h3>
+            <h3>Mi Equipo - {liderData.equipo}</h3>
             <div className="tarjetas-grid">
               {[1, 2, 3, 4].map(i => (
                 <div key={i} className="tarjeta-persona lider">
                   <FaUserCog className="tarjeta-icono" />
-                  <h4>Líder {i}</h4>
-                  <p>Equipo: {i === 1 ? 'Ventas' : i === 2 ? 'Soporte' : i === 3 ? 'Desarrollo' : 'Diseño'}</p>
+                  <h4>Líder del equipo</h4>
+                  <p>Equipo: {liderData.equipo}</p>
                   <span className="badge">Activo</span>
                 </div>
               ))}
@@ -89,7 +106,7 @@ function Lider() {
       case 'empleados':
         return (
           <div className="seccion-contenido">
-            <h3>Empleados</h3>
+            <h3>Miembros de mi Equipo</h3>
             <div className="tarjetas-grid">
               {[1, 2, 3, 4, 5].map(i => (
                 <div key={i} className="tarjeta-persona empleado">
@@ -102,7 +119,6 @@ function Lider() {
             </div>
           </div>
         );
-      
       default:
         return null;
     }
@@ -110,20 +126,17 @@ function Lider() {
 
   return (
     <div className="dashboard-container lider">
-      <DashboardHeader empresaData={empresaData} />
-
-      {/* Contenido principal */}
+      <DashboardHeader empresaData={empresaData} userRole={`LÍDER - ${liderData.equipo}`} />
+      
       <div className="dashboard-main">
-        {/* Barra lateral izquierda - Navegación */}
         <aside className="sidebar-left">
           <nav className="nav-menu">
-          
             <button 
               className={`nav-item ${seccionActiva === 'directores' ? 'activo' : ''}`}
               onClick={() => setSeccionActiva('directores')}
             >
               <FaUserTie className="nav-icon" />
-              <span>Directores</span>
+              <span>Mi Director</span>
             </button>
 
             <button 
@@ -131,7 +144,7 @@ function Lider() {
               onClick={() => setSeccionActiva('lideres')}
             >
               <FaUserCog className="nav-icon" />
-              <span>Líderes</span>
+              <span>Mi Equipo</span>
             </button>
 
             <button 
@@ -139,36 +152,35 @@ function Lider() {
               onClick={() => setSeccionActiva('empleados')}
             >
               <FaUsers className="nav-icon" />
-              <span>Empleados</span>
+              <span>Miembros</span>
             </button>
-
-           
 
             <div className="nav-divider"></div>
 
+            <button className="nav-item" onClick={logout}>
+              🚪 <span>Cerrar Sesión</span>
+            </button>
+
             <div className="nav-stats">
               <div className="stat-item">
-                <span className="stat-label">Total:</span>
-                <span className="stat-value">12</span>
+                <span className="stat-label">Mi Equipo:</span>
+                <span className="stat-value">{liderData.equipo}</span>
               </div>
             </div>
           </nav>
         </aside>
 
-        {/* Espacio central - Contenido dinámico */}
         <main className="content-center">
           {renderContenidoCentral()}
         </main>
 
-        {/* Barra lateral derecha - Calendario */}
         <aside className="sidebar-right">
           <Calendario />
         </aside>
       </div>
-
-    
     </div>
   );
 }
+
 
 export default Lider;

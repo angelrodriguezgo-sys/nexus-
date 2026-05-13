@@ -5,25 +5,54 @@ import { FaPerson } from 'react-icons/fa6';
 import DashboardHeader from '../../components/DashboardHeader';
 import Calendario from '../../components/Calendario';
 import '../../Estilos/Ceo.css';
+import { useAuth } from '../../context/AuthContext';
 
 function Empleado() {
-  const [fechaActual, setFechaActual] = useState(new Date());
-  const [seccionActiva, setSeccionActiva] = useState('directores');
+  const { user, empresa, loading, logout } = useAuth();
+  const navigate = useNavigate();
+  const [seccionActiva, setSeccionActiva] = useState('empleados');
 
-  const userRole = 'Empleado'; // Este valor debería venir de la autenticación del usuario
-  // Datos de ejemplo
+  // ✅ Redirigir si no hay usuario o no es empleado
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/login');
+    }
+    if (!loading && user && user.rol !== 'empleado') {
+      navigate('/dashboard');
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return <div className="loading-container">Cargando...</div>;
+  }
+
+  if (!user || user.rol !== 'empleado') {
+    return null;
+  }
+
+  // ✅ DATOS REALES DE LA EMPRESA DESDE AUTHCONTEXT
   const empresaData = {
-    nombre: "MI EMPRESA S.A.S.",
-    nit: "900.123.456-7"
+    nombre: empresa?.nombre || 'Mi Empresa',
+    nit: empresa?.nit || 'NIT no registrado',
+    plan_id: empresa?.plan_id || 'plan_basico'
   };
 
+  // ✅ DATOS DEL EMPLEADO LOGUEADO
+  const empleadoData = {
+    nombre: user?.nombre || '',
+    apellido: user?.apellido || '',
+    email: user?.email,
+    cargo: user?.cargo || 'Empleado',
+    equipo: user?.equipo || 'General'
+  };
 
-  // Función para cambiar mes
+  // ✅ Funciones del calendario (se mantienen igual)
+  const [fechaActual, setFechaActual] = useState(new Date());
+
   const cambiarMes = (incremento) => {
     setFechaActual(new Date(fechaActual.getFullYear(), fechaActual.getMonth() + incremento, 1));
   };
 
-  // Obtener días del mes
   const getDiasDelMes = () => {
     const año = fechaActual.getFullYear();
     const mes = fechaActual.getMonth();
@@ -31,18 +60,10 @@ function Empleado() {
     const ultimoDia = new Date(año, mes + 1, 0).getDate();
     
     const dias = [];
-    // Ajustar para que la semana empiece en lunes (1) en lugar de domingo (0)
     const primerDiaAjustado = primerDia === 0 ? 6 : primerDia - 1;
     
-    // Días vacíos antes del primer día del mes
-    for (let i = 0; i < primerDiaAjustado; i++) {
-      dias.push(null);
-    }
-    
-    // Días del mes
-    for (let i = 1; i <= ultimoDia; i++) {
-      dias.push(i);
-    }
+    for (let i = 0; i < primerDiaAjustado; i++) dias.push(null);
+    for (let i = 1; i <= ultimoDia; i++) dias.push(i);
     
     return dias;
   };
@@ -50,20 +71,18 @@ function Empleado() {
   const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
   const diasDelMes = getDiasDelMes();
 
-  // Contenido dinámico según la sección activa
   const renderContenidoCentral = () => {
     switch(seccionActiva) {
-      
       case 'lideres':
         return (
           <div className="seccion-contenido">
-            <h3>Líderes de Equipo</h3>
+            <h3>Mis Líderes</h3>
             <div className="tarjetas-grid">
-              {[1, 2, 3, 4].map(i => (
+              {[1, 2].map(i => (
                 <div key={i} className="tarjeta-persona lider">
                   <FaUserCog className="tarjeta-icono" />
                   <h4>Líder {i}</h4>
-                  <p>Equipo: {i === 1 ? 'Ventas' : i === 2 ? 'Soporte' : i === 3 ? 'Desarrollo' : 'Diseño'}</p>
+                  <p>Equipo: {empleadoData.equipo}</p>
                   <span className="badge">Activo</span>
                 </div>
               ))}
@@ -73,20 +92,19 @@ function Empleado() {
       case 'empleados':
         return (
           <div className="seccion-contenido">
-            <h3>Empleados</h3>
+            <h3>Mis Compañeros</h3>
             <div className="tarjetas-grid">
-              {[1, 2, 3, 4, 5].map(i => (
+              {[1, 2, 3, 4].map(i => (
                 <div key={i} className="tarjeta-persona empleado">
                   <FaUser className="tarjeta-icono" />
-                  <h4>Empleado {i}</h4>
-                  <p>Puesto: {i === 1 ? 'Desarrollador' : i === 2 ? 'Diseñador' : i === 3 ? 'Analista' : i === 4 ? 'Soporte' : 'Ventas'}</p>
+                  <h4>Compañero {i}</h4>
+                  <p>Puesto: Desarrollo</p>
                   <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
           </div>
         );
-   
       default:
         return null;
     }
@@ -94,20 +112,17 @@ function Empleado() {
 
   return (
     <div className="dashboard-container empleado">
-      <DashboardHeader empresaData={empresaData} />
-
-      {/* Contenido principal */}
+      <DashboardHeader empresaData={empresaData} userRole={`EMPLEADO - ${empleadoData.equipo}`} />
+      
       <div className="dashboard-main">
-        {/* Barra lateral izquierda - Navegación */}
         <aside className="sidebar-left">
           <nav className="nav-menu">
-          
             <button 
               className={`nav-item ${seccionActiva === 'lideres' ? 'activo' : ''}`}
               onClick={() => setSeccionActiva('lideres')}
             >
               <FaUserCog className="nav-icon" />
-              <span>Líderes</span>
+              <span>Mis Líderes</span>
             </button>
 
             <button 
@@ -115,34 +130,32 @@ function Empleado() {
               onClick={() => setSeccionActiva('empleados')}
             >
               <FaUsers className="nav-icon" />
-              <span>Empleados</span>
+              <span>Compañeros</span>
             </button>
-
-            
 
             <div className="nav-divider"></div>
 
+            <button className="nav-item" onClick={logout}>
+              🚪 <span>Cerrar Sesión</span>
+            </button>
+
             <div className="nav-stats">
               <div className="stat-item">
-                <span className="stat-label">Total:</span>
-                <span className="stat-value">12</span>
+                <span className="stat-label">Mi Rol:</span>
+                <span className="stat-value">{user?.rol?.toUpperCase()}</span>
               </div>
             </div>
           </nav>
         </aside>
 
-        {/* Espacio central - Contenido dinámico */}
         <main className="content-center">
           {renderContenidoCentral()}
         </main>
 
-        {/* Barra lateral derecha - Calendario */}
         <aside className="sidebar-right">
           <Calendario />
         </aside>
       </div>
-
-    
     </div>
   );
 }
