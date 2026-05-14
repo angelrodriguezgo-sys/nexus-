@@ -1,12 +1,14 @@
-
-
-/* Sección principal */
+/* ============================================
+   SECCIÓN PRINCIPAL DE PLANES
+   ============================================ */
 .precios-section {
   max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+/* Título */
 .precios-section .section-title {
   font-size: 2rem;
   font-weight: 700;
@@ -32,34 +34,33 @@
 .precios-section .cards-container {
   display: flex;
   justify-content: center;
-  align-items: stretch;
   gap: 2rem;
   flex-wrap: wrap;
   margin-bottom: 3rem;
 }
 
-/* Tarjetas de planes */
+/* Tarjetas */
 .precios-section .plan-card {
-  background: #FFFFFF;
+  background: white;
   border-radius: 1.25rem;
   padding: 2rem 1.5rem;
   text-align: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   border: 1px solid #ECF0F1;
   transition: all 0.3s ease;
   flex: 1;
-  min-width: 250px;
+  min-width: 280px;
   max-width: 320px;
-  position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .precios-section .plan-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
-  border-color: #3498DB;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12);
 }
 
+/* Línea superior al hover */
 .precios-section .plan-card::before {
   content: '';
   position: absolute;
@@ -76,86 +77,155 @@
   transform: scaleX(1);
 }
 
-/* Plan destacado */
-.precios-section .plan-card:nth-child(2) {
-  border: 2px solid #3498DB;
-  box-shadow: 0 12px 28px rgba(52, 152, 219, 0.15);
-}
+/* Colores por plan */
+.precios-section .plan-card.basico { border-top: 4px solid #3498DB; }
+.precios-section .plan-card.basico .plan-title { color: #3498DB; }
+.precios-section .plan-card.basico .plan-btn { background: #3498DB; }
 
-.precios-section .plan-card:nth-child(2)::before {
-  transform: scaleX(1);
+.precios-section .plan-card.profesional { 
+  border-top: 4px solid #E67E22; 
+  transform: scale(1.02);
 }
+.precios-section .plan-card.profesional .plan-title { color: #E67E22; }
+.precios-section .plan-card.profesional .plan-btn { background: #E67E22; }
+.precios-section .plan-card.profesional::before { background: #E67E22; transform: scaleX(1); }
 
+.precios-section .plan-card.premium { border-top: 4px solid #F1C40F; }
+.precios-section .plan-card.premium .plan-title { color: #F1C40F; }
+.precios-section .plan-card.premium .plan-btn { background: #F1C40F; }
+.precios-section .plan-card.premium .plan-btn a { color: #1A2B3C; }
+
+/* Título del plan */
 .precios-section .plan-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  color: #1A2B3C;
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid #ECF0F1;
+  margin-bottom: 0.5rem;
 }
 
+/* Descripción */
 .precios-section .plan-description {
   font-size: 0.9rem;
   color: #7F8C8D;
   margin-bottom: 1.5rem;
   line-height: 1.5;
+  flex-grow: 1;
 }
 
+/* Capacidad */
+.precios-section .plan-limite {
+  background: #F8F9FA;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.precios-section .limite-label {
+  font-size: 0.8rem;
+  color: #7F8C8D;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.precios-section .limite-valor {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1A2B3C;
+  display: block;
+}
+
+/* Precio */
+.precios-section .plan-precio {
+  margin: 1rem 0;
+}
+
+.precios-section .precio-valor {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1A2B3C;
+}
+
+.precios-section .precio-periodo {
+  font-size: 0.8rem;
+  color: #7F8C8D;
+}
+
+/* ============================================
+   BOTÓN - SIMPLIFICADO Y CORREGIDO
+   ============================================ */
 .precios-section .plan-btn {
-  background: #3498DB;
   border: none;
   border-radius: 2rem;
+   font-size: 25px;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
-  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
-}
-
-.precios-section .plan-btn:hover {
-  transform: translateY(-2px);
-  background: #2980B9;
+  margin-top: 1rem;
 }
 
 .precios-section .plan-btn a {
   display: block;
-  padding: 0.875rem 1.5rem;
+    padding: 1.5rem 2.5rem;
   color: white;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
-/* Banner de descuento */
+.precios-section .plan-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+.precios-section .plan-btn:active {
+  transform: translateY(0);
+}
+
+/* Banner descuento */
 .precios-section .warning-banner {
-  background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%);
+  background: linear-gradient(135deg, #F39C12, #E67E22);
   color: white;
   text-align: center;
   padding: 1rem 1.5rem;
   border-radius: 3rem;
   font-weight: 700;
-  font-size: 1.1rem;
   margin: 2rem auto 0;
   max-width: 400px;
   animation: pulse 2s infinite;
 }
 
-/* Responsive */
+.precios-section .warning-banner::before {
+  content: '🎉';
+  margin-right: 0.5rem;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+/* ============================================
+   RESPONSIVE - SIMPLIFICADO
+   ============================================ */
 @media (max-width: 768px) {
   .precios-section {
     padding: 2rem 1rem;
   }
   
-  .precios-section .cards-container {
-    gap: 1.5rem;
+  .precios-section .plan-title {
+    font-size: 1.4rem;
   }
   
-  .precios-section .plan-card {
-    min-width: 280px;
+  .precios-section .plan-card.profesional {
+    transform: scale(1);
+  }
+  
+  .precios-section .plan-btn a {
+    padding: 0.75rem 1rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .precios-section .cards-container {
     flex-direction: column;
     align-items: center;
@@ -165,10 +235,17 @@
     width: 100%;
     max-width: 100%;
   }
-}
-
-/* Animaciones */
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
+  
+  .precios-section .plan-card.profesional {
+    order: -1;
+  }
+  
+  .precios-section .section-title {
+    font-size: 1.8rem;
+  }
+  
+  .precios-section .warning-banner {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
 }

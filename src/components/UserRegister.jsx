@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../Estilos/Register.css';
@@ -7,25 +7,23 @@ function UserRegister() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [nit, setNit] = useState(''); // Estado para el NIT
-  const [nombreEmpresa, setNombreEmpresa] = useState(''); // Estado para el nombre de la empresa
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
   const [error, setError] = useState('');
-  const { UserRegister } = useAuth();
+  const [nit, setNit] = useState('');
+  const [nombreEmpresa, setNombreEmpresa] = useState('');
+  const { register } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Obtener datos del estado de navegación (si vienen del paso de pago)
-  const { nit: nitFromState, nombreEmpresa: nombreEmpresaFromState } = location.state || {};
+  const empresaData = location.state?.empresaData;
 
-  // Si hay datos del estado, usarlos para prellenar los campos
-  React.useEffect(() => {
-    if (nitFromState) {
-      setNit(nitFromState);
+  useEffect(() => {
+    if (empresaData) {
+      setNit(empresaData.nit || '');
+      setNombreEmpresa(empresaData.nombre || '');
     }
-    if (nombreEmpresaFromState) {
-      setNombreEmpresa(nombreEmpresaFromState);
-    }
-  }, [nitFromState, nombreEmpresaFromState]);
+  }, [empresaData]);
 
   // Función para validar NIT (solo números y guiones)
   const handleNitChange = (e) => {
@@ -37,8 +35,16 @@ function UserRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
-    // Validaciones adicionales
+   
+    // Validaciones
+    if (!nombre.trim()) {
+      setError('El nombre del CEO es obligatorio.');
+      return;
+    }
+    if (!apellido.trim()) {
+      setError('El apellido del CEO es obligatorio.');
+      return;
+    }
     if (!nit.trim()) {
       setError('El NIT de la empresa es obligatorio.');
       return;
@@ -63,10 +69,14 @@ function UserRegister() {
       setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
-    
+
     try {
-      // Aquí puedes incluir los datos de la empresa en el registro
-      await UserRegister(email, password, { nit, nombreEmpresa });
+      await register(email, password, {
+        nombre,
+        apellido,
+        rol: 'ceo',
+        empresaId: empresaData?.id || null
+      });
       alert('✅ Registro exitoso. Serás redirigido al inicio de sesión.');
       navigate('/login');
     } catch (err) {
@@ -84,11 +94,36 @@ function UserRegister() {
   return (
     <div className="register-container">
       <div className="register-card">
-        <h2 className="register-title">Registro</h2>
-        <p className="register-subtitle">Completa tus datos para registrarte</p>
+        <h2 className="register-title">Registro de Usuario</h2>
+        <p className="register-subtitle">Completa tus datos para registrarte 
+          <br/>
+          <br/>
+          Seras registrado como CEO por defecto
+        </p>
 
         <form className="register-form" onSubmit={handleSubmit}>
-          {/* Campo NIT de la empresa */}
+         
+          {/* Nombre */}
+          <input
+            className="register-input"
+            type="text"
+            placeholder="Nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            required
+          />
+
+          {/* Apellido */}
+          <input
+            className="register-input"
+            type="text"
+            placeholder="Apellido"
+            value={apellido}
+            onChange={(e) => setApellido(e.target.value)}
+            required
+          />
+
+          {/* NIT empresa */}
           <input
             className="register-input"
             type="text"
@@ -98,7 +133,7 @@ function UserRegister() {
             required
           />
 
-          {/* Campo Nombre de la empresa */}
+          {/* Nombre empresa */}
           <input
             className="register-input"
             type="text"
@@ -108,6 +143,7 @@ function UserRegister() {
             required
           />
 
+          {/* Email */}
           <input
             className="register-input"
             type="email"
@@ -116,7 +152,8 @@ function UserRegister() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          
+         
+          {/* Contraseña */}
           <input
             className="register-input"
             type="password"
@@ -126,6 +163,7 @@ function UserRegister() {
             required
           />
 
+          {/* Confirmar Contraseña */}
           <input
             className="register-input"
             type="password"
@@ -139,7 +177,7 @@ function UserRegister() {
 
           {error && <p className="error-message">{error}</p>}
         </form>
-        
+       
         <p className="register-footer">
           ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
         </p>

@@ -1,0 +1,126 @@
+/* ========================================
+   LOGOUT COMPONENT
+   ======================================== */
+
+.logout-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+  padding: 20px;
+}
+
+.logout-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 35px;
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.4s ease-out;
+}
+
+.logout-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.logout-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1A2B3C;
+  margin-bottom: 0.75rem;
+}
+
+.logout-message {
+  color: #7F8C8D;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.logout-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.logout-cancel-btn,
+.logout-confirm-btn {
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-cancel-btn {
+  background: #ECF0F1;
+  color: #2C3E50;
+}
+
+.logout-cancel-btn:hover {
+  background: #BDC3C7;
+  transform: translateY(-2px);
+}
+
+.logout-confirm-btn {
+  background: #E74C3C;
+  color: white;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.logout-confirm-btn:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.logout-cancel-btn:disabled,
+.logout-confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .logout-card {
+    padding: 30px 20px;
+  }
+
+  .logout-title {
+    font-size: 1.5rem;
+  }
+
+  .logout-message {
+    font-size: 0.9rem;
+  }
+
+  .logout-buttons {
+    flex-direction: column;
+  }
+
+  .logout-cancel-btn,
+  .logout-confirm-btn {
+    width: 100%;
+    padding: 0.75rem;
+  }
+}

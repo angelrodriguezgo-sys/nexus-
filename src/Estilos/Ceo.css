@@ -1,431 +1,460 @@
+/* ===== HEADER MEJORADO ===== */
+.dashboard-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 12px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 70px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo-section:hover {
+  transform: scale(1.05);
+}
+
+.header-logo-icon {
+  font-size: 2em;
+  color: white;
+}
+
+.logo-text {
+  color: white;
+  font-size: 1.3em;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  margin: 0 30px;
+}
+
+.empresa-info {
+  text-align: center;
+  color: white;
+}
+
+.empresa-titulo {
+  color: white;
+  font-size: 1.6em;
+  margin: 0 0 4px 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.empresa-nit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.nit-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75em;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.nit-valor {
+  color: white;
+  font-size: 0.9em;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3px 10px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.header-right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.header-icon-link,
+.header-icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: white;
+}
+
+.header-icon-btn {
+  padding: 0;
+}
+
+.header-icon-link:hover,
+.header-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header-icon {
+  font-size: 1.2em;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.header-icon-link:hover .header-icon,
+.header-icon-btn:hover .header-icon {
+  transform: scale(1.1);
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #f87171;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  font-weight: bold;
+  border: 2px solid #667eea;
+}
+
+.notificacion-link {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(248, 113, 113, 0);
+  }
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
 .dashboard-container {
-          min-height: 100vh;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        /* ===== HEADER ===== */
-        .dashboard-header {
-          background: white;
-          padding: 15px 30px;
-          display: grid;
-          grid-template-columns: 1fr auto 1fr;
-          align-items: center;
-          box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-          position: sticky;
-          top: 0;
-          z-index: 100;
-        }
-
-        .header-left, .header-right {
-          display: flex;
-          gap: 20px;
-          align-items: center;
-        }
-
-        .header-right {
-          justify-content: flex-end;
-        }
-
-        .header-icon {
-          font-size: 1.3em;
-          color: #6B7280;
-          cursor: pointer;
-          transition: all 0.3s;
-        }
-
-        .header-icon:hover {
-          color: #667eea;
-          transform: scale(1.1);
-        }
-
-        .header-center {
-          text-align: center;
-        }
-
-        .empresa-titulo {
-          color: #6B7280;
-          font-size: 1.8em;
-          margin: 0 0 5px 0;
-          font-weight: 600;
-          letter-spacing: 1px;
-        }
-
-        .empresa-nit {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-        }
-
-        .nit-label {
-          color: #9CA3AF;
-          font-size: 0.8em;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-
-        .nit-valor {
-          color: #4B5563;
-          font-size: 1em;
-          background: #F3F4F6;
-          padding: 4px 12px;
-          border-radius: 20px;
-          border: 1px solid #E5E7EB;
-        }
-
-        /* ===== MAIN LAYOUT ===== */
-        .dashboard-main {
-          display: grid;
-          grid-template-columns: 250px 1fr 350px;
-          gap: 20px;
-          padding: 20px;
-          max-width: 1600px;
-          margin: 0 auto;
-        }
-
-        /* ===== SIDEBAR IZQUIERDA ===== */
-        .sidebar-left {
-          background: white;
-          border-radius: 15px;
-          padding: 20px;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-          height: fit-content;
-          position: sticky;
-          top: 100px;
-        }
-
-        .nav-menu {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-
-        .nav-item {
-          display: flex;
-          align-items: center;
-          gap: 15px;
-          padding: 12px 15px;
-          border: none;
-          background: none;
-          border-radius: 10px;
-          color: #4B5563;
-          font-size: 1em;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.3s;
-          width: 100%;
-          text-align: left;
-        }
-
-        .nav-item:hover {
-          background: #F3F4F6;
-          color: #667eea;
-        }
-
-        .nav-item.activo {
-          background: #667eea;
-          color: white;
-        }
-
-        .nav-item.activo .nav-icon {
-          color: white;
-        }
-
-        .nav-icon {
-          font-size: 1.2em;
-          color: #9CA3AF;
-        }
-
-        .nav-divider {
-          height: 1px;
-          background: #E5E7EB;
-          margin: 15px 0;
-        }
-
-        .nav-stats {
-          padding: 10px;
-          background: #F9FAFB;
-          border-radius: 10px;
-        }
-
-        .stat-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .stat-label {
-          color: #6B7280;
-          font-size: 0.9em;
-        }
-
-        .stat-value {
-          color: #667eea;
-          font-weight: bold;
-          font-size: 1.2em;
-        }
-
-        /* ===== CONTENIDO CENTRAL ===== */
-        .content-center {
-          background: white;
-          border-radius: 15px;
-          padding: 25px;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-          min-height: 600px;
-        }
-
-        .seccion-contenido h3 {
-          color: #374151;
-          margin-bottom: 20px;
-          font-size: 1.5em;
-        }
-
-        .tarjetas-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-          gap: 20px;
-        }
-
-        .tarjeta-persona {
-          background: #F9FAFB;
-          border-radius: 12px;
-          padding: 20px;
-          text-align: center;
-          transition: all 0.3s;
-          border: 2px solid transparent;
-        }
-
-        .tarjeta-persona:hover {
-          transform: translateY(-5px);
-          border-color: #667eea;
-          box-shadow: 0 10px 25px rgba(102,126,234,0.1);
-        }
-
-        .tarjeta-persona.director .tarjeta-icono {
-          color: #F59E0B;
-        }
-
-        .tarjeta-persona.lider .tarjeta-icono {
-          color: #10B981;
-        }
-
-        .tarjeta-persona.empleado .tarjeta-icono {
-          color: #3B82F6;
-        }
-
-        .tarjeta-icono {
-          font-size: 2.5em;
-          margin-bottom: 10px;
-        }
-
-        .tarjeta-persona h4 {
-          color: #1F2937;
-          margin-bottom: 5px;
-          font-size: 1.1em;
-        }
-
-        .tarjeta-persona p {
-          color: #6B7280;
-          font-size: 0.9em;
-          margin-bottom: 10px;
-        }
-
-        .badge {
-          background: #10B981;
-          color: white;
-          padding: 4px 12px;
-          border-radius: 20px;
-          font-size: 0.8em;
-          display: inline-block;
-        }
-
-        /* ===== SIDEBAR DERECHA ===== */
-        .sidebar-right {
-          background: white;
-          border-radius: 15px;
-          padding: 20px;
-          box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-          height: fit-content;
-          position: sticky;
-          top: 100px;
-        }
-
-        .calendario-container {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-        }
-
-        .calendario-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 10px;
-        }
-
-        .calendario-header h3 {
-          color: #374151;
-          font-size: 1.1em;
-          text-transform: capitalize;
-        }
-
-        .mes-nav {
-          background: none;
-          border: none;
-          color: #9CA3AF;
-          cursor: pointer;
-          padding: 5px 10px;
-          border-radius: 5px;
-          transition: all 0.3s;
-        }
-
-        .mes-nav:hover {
-          background: #F3F4F6;
-          color: #667eea;
-        }
-
-        .calendario-semana {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          gap: 5px;
-          margin-bottom: 5px;
-        }
-
-        .dia-semana {
-          text-align: center;
-          color: #9CA3AF;
-          font-size: 0.8em;
-          font-weight: 500;
-          padding: 5px;
-        }
-
-        .calendario-dias {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          gap: 5px;
-        }
-
-        .dia-mes {
-          aspect-ratio: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          background: #F9FAFB;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.3s;
-          position: relative;
-          padding: 5px;
-        }
-
-        .dia-mes:hover:not(.vacio) {
-          background: #667eea;
-          color: white;
-        }
-
-        .dia-mes:hover:not(.vacio) .dia-numero {
-          color: white;
-        }
-
-        .dia-mes.vacio {
-          background: transparent;
-          cursor: default;
-        }
-
-        .dia-numero {
-          color: #374151;
-          font-size: 0.9em;
-          font-weight: 500;
-        }
-
-        .evento-indicador {
-          width: 4px;
-          height: 4px;
-          background: #EF4444;
-          border-radius: 50%;
-          margin-top: 2px;
-        }
-
-        .calendario-eventos {
-          margin-top: 20px;
-          padding-top: 20px;
-          border-top: 1px solid #E5E7EB;
-        }
-
-        .calendario-eventos h4 {
-          color: #374151;
-          font-size: 1em;
-          margin-bottom: 15px;
-        }
-
-        .evento-item {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 8px 0;
-          border-bottom: 1px solid #F3F4F6;
-        }
-
-        .evento-hora {
-          color: #667eea;
-          font-size: 0.9em;
-          font-weight: 500;
-          min-width: 50px;
-        }
-
-        .evento-titulo {
-          color: #4B5563;
-          font-size: 0.9em;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1200px) {
-          .dashboard-main {
-            grid-template-columns: 200px 1fr 300px;
-          }
-        }
-
-        @media (max-width: 992px) {
-          .dashboard-main {
-            grid-template-columns: 1fr;
-            gap: 20px;
-          }
-
-          .sidebar-left, .sidebar-right {
-            position: static;
-          }
-
-          .sidebar-left {
-            order: 2;
-          }
-
-          .content-center {
-            order: 1;
-          }
-
-          .sidebar-right {
-            order: 3;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .dashboard-header {
-            grid-template-columns: 1fr;
-            gap: 15px;
-            text-align: center;
-          }
-
-          .header-left, .header-right {
-            justify-content: center;
-          }
-
-          .empresa-titulo {
-            font-size: 1.5em;
-          }
-
-          .tarjetas-grid {
-            grid-template-columns: 1fr;
-          }
-        }
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-container.ceo {
+  background: linear-gradient(135deg, #6b4cb8 0%, #8f6cd8 100%);
+}
+
+.dashboard-container.director {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+.dashboard-container.lider {
+  background: linear-gradient(135deg, #91c9f7 0%, #5da5f7 100%);
+}
+
+.dashboard-container.empleado {
+  background: linear-gradient(135deg, #2f8a4e 0%, #78d37c 100%);
+}
+
+/* ===== MAIN LAYOUT ===== */
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 250px 1fr 350px;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* ===== SIDEBAR IZQUIERDA ===== */
+.sidebar-left {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 15px;
+  border: none;
+  background: none;
+  border-radius: 10px;
+  color: #4B5563;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+  text-align: left;
+}
+
+.nav-item:hover {
+  background: #F3F4F6;
+  color: #667eea;
+}
+
+.nav-item.activo {
+  background: #667eea;
+  color: white;
+}
+
+.nav-item.activo .nav-icon {
+  color: white;
+}
+
+.nav-icon {
+  font-size: 1.2em;
+  color: #9CA3AF;
+}
+
+.nav-divider {
+  height: 1px;
+  background: #E5E7EB;
+  margin: 15px 0;
+}
+
+.nav-stats {
+  padding: 10px;
+  background: #F9FAFB;
+  border-radius: 10px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  color: #6B7280;
+  font-size: 0.9em;
+}
+
+.stat-value {
+  color: #667eea;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+/* ===== CONTENIDO CENTRAL ===== */
+.content-center {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  min-height: 600px;
+}
+
+.seccion-contenido h3 {
+  color: #374151;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
+.tarjetas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.tarjeta-persona {
+  background: #F9FAFB;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.tarjeta-persona:hover {
+  transform: translateY(-5px);
+  border-color: #667eea;
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.1);
+}
+
+.tarjeta-persona.director .tarjeta-icono {
+  color: #F59E0B;
+}
+
+.tarjeta-persona.lider .tarjeta-icono {
+  color: #10B981;
+}
+
+.tarjeta-persona.empleado .tarjeta-icono {
+  color: #3B82F6;
+}
+
+.tarjeta-icono {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.tarjeta-persona h4 {
+  color: #1F2937;
+  margin-bottom: 5px;
+  font-size: 1.1em;
+}
+
+.tarjeta-persona p {
+  color: #6B7280;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+/* ===== SIDEBAR DERECHA ===== */
+.sidebar-right {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+/* ===== BOTÓN PANEL ADMIN ===== */
+.boton-panel-admin {
+  display: inline-block;
+  background: #667eea;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.boton-panel-admin:hover {
+  background: #5a67d8;
+  transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+  .dashboard-header {
+    padding: 10px 20px;
+    min-height: 65px;
+  }
+
+  .header-center {
+    margin: 0 20px;
+  }
+
+  .empresa-titulo {
+    font-size: 1.4em;
+  }
+
+  .logo-text {
+    font-size: 1.1em;
+  }
+
+  .dashboard-main {
+    grid-template-columns: 200px 1fr 300px;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-main {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .sidebar-left,
+  .sidebar-right {
+    position: static;
+  }
+
+  .sidebar-left {
+    order: 2;
+  }
+
+  .content-center {
+    order: 1;
+  }
+
+  .sidebar-right {
+    order: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: auto;
+    padding: 10px 15px;
+  }
+
+  .header-center {
+    flex: 1 1 100%;
+    margin: 8px 0;
+  }
+
+  .empresa-titulo {
+    font-size: 1.2em;
+  }
+
+  .logo-text {
+    font-size: 0.9em;
+  }
+
+  .header-right {
+    gap: 10px;
+  }
+
+  .header-icon-link,
+  .header-icon-btn {
+    width: 35px;
+    height: 35px;
+  }
+
+  .header-icon {
+    font-size: 1em;
+  }
+  .tarjetas-grid {
+    grid-template-columns: 1fr;
+  }
+}

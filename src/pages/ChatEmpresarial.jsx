@@ -1,5 +1,7 @@
 import '../Estilos/ChatEmpresarial.css';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';import { useAuth } from '../context/AuthContext';import HeaderInt from '../components/HeaderInt';
+import { db } from '../services/firebase/Firebase';
+import { collection, addDoc, onSnapshot, query, where, orderBy, serverTimestamp } from 'firebase/firestore';
 
 const ChatEmpresarial = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -8,23 +10,33 @@ const ChatEmpresarial = () => {
   const [mensajes, setMensajes] = useState([]);
   const [nuevoMensaje, setNuevoMensaje] = useState('');
   const [error, setError] = useState('');
+  const [conversationId, setConversationId] = useState(null);
+  const [unsubscribe, setUnsubscribe] = useState(null);
   const messagesEndRef = useRef(null);
 
-  // Rangos disponibles (de mayor a menor)
+  const { empresa } = useAuth();
+
+  // Datos de empresa para HeaderInt
+  const empresaData = {
+    nombre: empresa?.nombre || 'MI EMPRESA S.A.S.',
+    nit: empresa?.nit || '900.123.456-7'
+  };
+
+  // Determinar el rol del usuario actual para HeaderInt
+  const userRole = usuarioActual?.rango || 'CEO';
   const rangos = [
-    { nombre: 'SuperAdmin', nivel: 5, color: '#FFD700' },
-    { nombre: 'Admin', nivel: 4, color: '#FF6B6B' },
-    { nombre: 'Moderador', nivel: 3, color: '#4ECDC4' },
-    { nombre: 'UsuarioVIP', nivel: 2, color: '#95E77E' },
-    { nombre: 'Usuario', nivel: 1, color: '#FFFFFF' }
+    { nombre: 'CEO', nivel: 5, color: '#FFD700' },
+    { nombre: 'Director', nivel: 4, color: '#F59E0B' },
+    { nombre: 'Líder', nivel: 3, color: '#3B82F6' },
+    { nombre: 'Empleado', nivel: 2, color: '#10B981' }
   ];
 
   // Usuario actual (logueado automáticamente)
   const usuarioAutomatico = {
     id: 1,
-    email: 'superadmin@chat.com',
-    nombre: 'Juan Super',
-    rango: 'SuperAdmin',
+    email: 'ceo@chat.com',
+    nombre: 'Juan CEO',
+    rango: 'CEO',
     rangoNivel: 5,
     online: true
   };
@@ -32,15 +44,57 @@ const ChatEmpresarial = () => {
   // Datos iniciales de usuarios
   useEffect(() => {
     const usuariosIniciales = [
-      { id: 1, email: 'superadmin@chat.com', nombre: 'Juan Super', rango: 'SuperAdmin', rangoNivel: 5, online: true },
-      { id: 2, email: 'admin@chat.com', nombre: 'Maria Admin', rango: 'Admin', rangoNivel: 4, online: true },
-      { id: 3, email: 'moderador@chat.com', nombre: 'Carlos Mod', rango: 'Moderador', rangoNivel: 3, online: false },
-      { id: 4, email: 'vip@chat.com', nombre: 'Ana VIP', rango: 'UsuarioVIP', rangoNivel: 2, online: true },
-      { id: 5, email: 'usuario@chat.com', nombre: 'Luis User', rango: 'Usuario', rangoNivel: 1, online: true }
+      { id: 1, email: 'ceo@chat.com', nombre: 'Juan CEO', rango: 'CEO', rangoNivel: 5, online: true },
+      { id: 2, email: 'director@chat.com', nombre: 'María Director', rango: 'Director', rangoNivel: 4, online: true },
+      { id: 3, email: 'lider@chat.com', nombre: 'Carlos Líder', rango: 'Líder', rangoNivel: 3, online: false },
+      { id: 4, email: 'empleado1@chat.com', nombre: 'Ana Empleado', rango: 'Empleado', rangoNivel: 2, online: true },
+      { id: 5, email: 'empleado2@chat.com', nombre: 'Luis Empleado', rango: 'Empleado', rangoNivel: 2, online: true }
     ];
     setUsuarios(usuariosIniciales);
     setUsuarioActual(usuarioAutomatico);
   }, []);
+
+  // Listener para mensajes
+  useEffect(() => {
+    if (usuarioSeleccionado && usuarioActual) {
+      // Limpiar listener anterior
+      if (unsubscribe) {
+        unsubscribe();
+      }
+
+      // Calcular conversationId
+      const ids = [usuarioActual.id, usuarioSeleccionado.id].sort();
+      const newConversationId = `${ids[0]}-${ids[1]}`;
+      setConversationId(newConversationId);
+
+      // Configurar listener
+      const q = query(collection(db, 'conversations', newConversationId, 'messages'), orderBy('timestamp'));
+      const unsub = onSnapshot(q, (querySnapshot) => {
+        console.log('Mensajes actualizados:', querySnapshot.size);
+        const msgs = [];
+        querySnapshot.forEach((doc) => {
+          msgs.push({ id: doc.id, ...doc.data() });
+        });
+        setMensajes(msgs);
+      });
+      setUnsubscribe(() => unsub);
+    } else {
+      // Si no hay usuario seleccionado, limpiar
+      if (unsubscribe) {
+        unsubscribe();
+        setUnsubscribe(null);
+      }
+      setMensajes([]);
+      setConversationId(null);
+    }
+
+    // Cleanup on unmount
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [usuarioSeleccionado, usuarioActual]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -55,43 +109,57 @@ const ChatEmpresarial = () => {
     return rango ? rango.color : '#FFFFFF';
   };
 
-  const puedeEscribir = (usuarioActualNivel, usuarioTargetNivel) => {
-    return usuarioActualNivel >= usuarioTargetNivel;
+  const puedeEscribir = (usuarioActualRango, usuarioTargetRango) => {
+    if (!usuarioActualRango || !usuarioTargetRango) return false;
+
+    if (usuarioActualRango === 'CEO' || usuarioActualRango === 'Director') {
+      return true;
+    }
+    if (usuarioActualRango === 'Líder') {
+      return ['Director', 'Líder', 'Empleado'].includes(usuarioTargetRango);
+    }
+    if (usuarioActualRango === 'Empleado') {
+      return ['Líder', 'Empleado'].includes(usuarioTargetRango);
+    }
+    return false;
   };
 
-  const enviarMensaje = (e) => {
+  const enviarMensaje = async (e) => {
     e.preventDefault();
     if (!nuevoMensaje.trim()) {
       setError('✏️ Escribe un mensaje antes de enviar');
       return;
     }
-    if (!usuarioSeleccionado) {
+    if (!usuarioSeleccionado || !conversationId) {
       setError('👥 Selecciona un usuario para chatear');
       return;
     }
 
-    const mensaje = {
-      id: Date.now(),
-      de: usuarioActual.id,
-      deNombre: usuarioActual.nombre,
-      deRango: usuarioActual.rango,
-      para: usuarioSeleccionado.id,
-      paraNombre: usuarioSeleccionado.nombre,
-      texto: nuevoMensaje,
-      timestamp: new Date().toLocaleTimeString(),
-      fecha: new Date().toLocaleDateString()
-    };
-
-    setMensajes([...mensajes, mensaje]);
-    setNuevoMensaje('');
-    setError('');
+    try {
+      console.log('Enviando mensaje:', nuevoMensaje);
+      await addDoc(collection(db, 'conversations', conversationId, 'messages'), {
+        fromId: usuarioActual.id,
+        fromName: usuarioActual.nombre,
+        fromRango: usuarioActual.rango,
+        toId: usuarioSeleccionado.id,
+        toName: usuarioSeleccionado.nombre,
+        text: nuevoMensaje,
+        timestamp: serverTimestamp()
+      });
+      console.log('Mensaje enviado exitosamente');
+      setNuevoMensaje('');
+      setError('');
+    } catch (err) {
+      console.error('Error al enviar mensaje:', err);
+      setError('Error al enviar mensaje');
+    }
   };
 
   const getUsuariosDisponibles = () => {
     if (!usuarioActual) return [];
     return usuarios.filter(user => 
       user.id !== usuarioActual.id && 
-      puedeEscribir(usuarioActual.rangoNivel, user.rangoNivel)
+      puedeEscribir(usuarioActual.rango, user.rango)
     );
   };
 
@@ -107,7 +175,9 @@ const ChatEmpresarial = () => {
   const usuariosDisponibles = getUsuariosDisponibles();
 
   return (
-    <div className="chat-main-container">
+    <>
+      <HeaderInt empresaData={empresaData} userRole={userRole} />
+      <div className="chat-main-container">
       {/* Sidebar - Lista de usuarios */}
       <div className="chat-sidebar">
         <div className="chat-user-profile">
@@ -124,9 +194,7 @@ const ChatEmpresarial = () => {
 
         <div className="chat-users-list">
           <h4>👥 Contactos disponibles</h4>
-          <p className="chat-rule-info">
-            ⚡ Puedes chatear con usuarios de mismo rango o inferior
-          </p>
+       
           
           {usuariosDisponibles.length === 0 ? (
             <p className="chat-no-users">😕 No hay usuarios disponibles para chatear</p>
@@ -163,7 +231,7 @@ const ChatEmpresarial = () => {
             <h3>Selecciona un contacto</h3>
             <p>Elige un usuario del panel izquierdo para comenzar a chatear</p>
             <p className="chat-rule-placeholder">
-              Recuerda: solo puedes chatear con usuarios del mismo rango o inferior
+              Recuerda: CEO/Director hablan con todos; Líder con Directores, Líderes y Empleados; Empleado con Líderes y Empleados.
             </p>
           </div>
         ) : (
@@ -184,30 +252,25 @@ const ChatEmpresarial = () => {
 
             {/* Mensajes */}
             <div className="chat-messages">
-              {mensajes
-                .filter(m => 
-                  (m.de === usuarioActual.id && m.para === usuarioSeleccionado.id) ||
-                  (m.de === usuarioSeleccionado.id && m.para === usuarioActual.id)
-                )
-                .map(mensaje => (
-                  <div
-                    key={mensaje.id}
-                    className={`chat-message ${mensaje.de === usuarioActual.id ? 'sent' : 'received'}`}
-                  >
-                    <div className="message-bubble">
-                      <div className="message-header">
-                        <span className="message-name">{mensaje.deNombre}</span>
-                        <span className="message-rango" style={{ color: getRangoColor(mensaje.deRango) }}>
-                          {mensaje.deRango}
-                        </span>
-                      </div>
-                      <p className="message-text">{mensaje.texto}</p>
-                      <div className="message-time">
-                        🕐 {mensaje.timestamp} - 📅 {mensaje.fecha}
-                      </div>
+              {mensajes.map(mensaje => (
+                <div
+                  key={mensaje.id}
+                  className={`chat-message ${mensaje.fromId === usuarioActual.id ? 'sent' : 'received'}`}
+                >
+                  <div className="message-bubble">
+                    <div className="message-header">
+                      <span className="message-name">{mensaje.fromName}</span>
+                      <span className="message-rango" style={{ color: getRangoColor(mensaje.fromRango) }}>
+                        {mensaje.fromRango}
+                      </span>
+                    </div>
+                    <p className="message-text">{mensaje.text}</p>
+                    <div className="message-time">
+                      🕐 {mensaje.timestamp?.toDate().toLocaleTimeString()} - 📅 {mensaje.timestamp?.toDate().toLocaleDateString()}
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
               <div ref={messagesEndRef} />
             </div>
 
@@ -230,7 +293,8 @@ const ChatEmpresarial = () => {
           </>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

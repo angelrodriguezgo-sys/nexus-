@@ -299,6 +299,49 @@
   background: #059669;
 }
 
+/* ===== MODAL DE CONFIRMACIÓN ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h3 {
+  color: #1a2b3c;
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.modal-content p {
+  color: #64748b;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 25px;
+}
+
 /* ===== PANTALLA DE PAGO ===== */
 .pago-container {
   position: fixed;
@@ -433,6 +476,78 @@
   color: #374151;
 }
 
+
+    .plan-info-card {
+          background: #f8fafc;
+          border-radius: 12px;
+          padding: 15px 20px;
+          margin-bottom: 25px;
+          border-left: 4px solid #3498db;
+        }
+        .plan-info-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+        }
+        .plan-badge {
+          background: #3498db;
+          color: white;
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .plan-limite-info {
+          color: #2c3e50;
+          font-weight: bold;
+        }
+        .plan-progress-info {
+          margin-top: 10px;
+        }
+        .progress-bar-mini {
+          background: #e2e8f0;
+          border-radius: 10px;
+          height: 8px;
+          overflow: hidden;
+          margin-top: 5px;
+        }
+        .progress-fill {
+          height: 100%;
+          transition: width 0.3s ease;
+          border-radius: 10px;
+        }
+        .error-resumen {
+          color: #e74c3c;
+          margin-top: 10px;
+          font-size: 14px;
+        }
+        button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+        .plan-precio {
+          margin: 15px 0;
+        }
+        .precio-valor {
+          font-size: 24px;
+          font-weight: bold;
+          color: #2c3e50;
+        }
+        .plan-limite {
+          margin: 10px 0;
+        }
+        .limite-label {
+          font-weight: bold;
+          color: #2c3e50;
+        }
+        .limite-valor {
+          color: #3498db;
+          margin-left: 8px;
+        }
+    
+
+        
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .config-empresa-container {
