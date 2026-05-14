@@ -42,6 +42,7 @@ const db = getFirestore(app);
 
 // ✅ EXPORTAR TODAS LAS FUNCIONES NECESARIAS
 export { 
+  firebaseConfig,
   auth, 
   db,
   // Auth functions

@@ -109,7 +109,6 @@ function Empleado() {
                   <FaUserCog className="tarjeta-icono" />
                   <h4>Líder {i}</h4>
                   <p>Equipo: {empleadoData.equipo}</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
@@ -125,7 +124,6 @@ function Empleado() {
                   <FaUser className="tarjeta-icono" />
                   <h4>Compañero {i}</h4>
                   <p>Puesto: Desarrollo</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>

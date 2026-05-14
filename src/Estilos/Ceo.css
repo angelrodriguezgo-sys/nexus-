@@ -344,15 +344,6 @@
   margin-bottom: 10px;
 }
 
-.badge {
-  background: #10B981;
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8em;
-  display: inline-block;
-}
-
 /* ===== SIDEBAR DERECHA ===== */
 .sidebar-right {
   background: white;

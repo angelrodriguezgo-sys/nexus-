@@ -68,7 +68,7 @@ function Lider() {
     nombre: user?.nombre || '',
     apellido: user?.apellido || '',
     email: user?.email,
-    equipo: user?.equipo || 'General',
+    equipo: user?.equipo || 'Lider de Equipo',
     area: user?.area || 'Operaciones'
   };
 
@@ -108,7 +108,6 @@ function Lider() {
                 <FaUserTie className="tarjeta-icono" />
                 <h4>Director</h4>
                 <p>Área: {liderData.area}</p>
-                <span className="badge">Activo</span>
               </div>
             </div>
           </div>
@@ -123,7 +122,6 @@ function Lider() {
                   <FaUserCog className="tarjeta-icono" />
                   <h4>Líder del equipo</h4>
                   <p>Equipo: {liderData.equipo}</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
@@ -139,7 +137,6 @@ function Lider() {
                   <FaUser className="tarjeta-icono" />
                   <h4>Empleado {i}</h4>
                   <p>Puesto: {i === 1 ? 'Desarrollador' : i === 2 ? 'Diseñador' : i === 3 ? 'Analista' : i === 4 ? 'Soporte' : 'Ventas'}</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>

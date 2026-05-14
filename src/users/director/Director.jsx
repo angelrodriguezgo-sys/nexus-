@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { FaPerson } from 'react-icons/fa6';
 import HeaderInt from '../../components/HeaderInt';
 import Calendario from '../../components/Calendario';
-import PanelAdmin from '../../pages/PanelAdmin';
 import '../../Estilos/Ceo.css';
 import { useAuth } from '../../context/AuthContext';
 
@@ -23,6 +22,10 @@ function Director() {
       console.error('Error al cerrar sesión:', err);
       alert('Hubo un problema al cerrar sesión. Intenta nuevamente.');
     }
+  };
+
+  const irAPanelAdmin = () => {
+    navigate('/PanelAdmin', { state: { empresaData } });
   };
 
   // ✅ Redirigir si no hay usuario o no es director
@@ -99,8 +102,6 @@ function Director() {
 
   const renderContenidoCentral = () => {
     switch(seccionActiva) {
-      case 'admin':
-        return <PanelAdmin empresaData={empresaData} />;
       case 'directores':
         return (
           <div className="seccion-contenido">
@@ -111,7 +112,6 @@ function Director() {
                   <FaUserTie className="tarjeta-icono" />
                   <h4>Director {i}</h4>
                   <p>Área: {empresaData.area}</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
@@ -127,7 +127,6 @@ function Director() {
                   <FaUserCog className="tarjeta-icono" />
                   <h4>Líder {i}</h4>
                   <p>Equipo: {empresaData.area} {i}</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
@@ -143,7 +142,6 @@ function Director() {
                   <FaUser className="tarjeta-icono" />
                   <h4>Empleado {i}</h4>
                   <p>Puesto: {i === 1 ? 'Analista' : 'Asistente'}</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
@@ -163,7 +161,10 @@ function Director() {
           <nav className="nav-menu">
             <button 
               className={`nav-item ${seccionActiva === 'admin' ? 'activo' : ''}`}
-              onClick={() => setSeccionActiva('admin')}
+              onClick={() => {
+                setSeccionActiva('admin');
+                irAPanelAdmin();
+              }}
             >
               <FaPerson className="nav-icon" />
               <span>Admin Mi Área</span>

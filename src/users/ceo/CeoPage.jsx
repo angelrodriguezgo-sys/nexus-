@@ -62,7 +62,6 @@ function CeoPage() {
                   <FaUserTie className="tarjeta-icono" />
                   <h4>Director {i}</h4>
                   <p>Área: {i === 1 ? 'Ventas' : i === 2 ? 'Marketing' : 'Operaciones'}</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
@@ -78,7 +77,6 @@ function CeoPage() {
                   <FaUserCog className="tarjeta-icono" />
                   <h4>Líder {i}</h4>
                   <p>Equipo: {i === 1 ? 'Ventas' : i === 2 ? 'Soporte' : 'Desarrollo'}</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>
@@ -94,7 +92,6 @@ function CeoPage() {
                   <FaUser className="tarjeta-icono" />
                   <h4>Empleado {i}</h4>
                   <p>Puesto: Desarrollador</p>
-                  <span className="badge">Activo</span>
                 </div>
               ))}
             </div>

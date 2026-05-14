@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import HeaderInt from '../components/HeaderInt';
-import { auth, db, collection, addDoc, doc, updateDoc, getDocs, query, where, setDoc, deleteDoc } from '../services/firebase/Firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
+import { firebaseConfig, auth, db, collection, addDoc, doc, updateDoc, getDocs, query, where, setDoc, deleteDoc } from '../services/firebase/Firebase';
 import '../Estilos/PanelAdmin.css';
 
 function PanelAdmin({ empresaData: empresaDataProp }) {
@@ -12,8 +13,16 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
   const empresaDataState = location.state?.empresaData;
 
   const [trabajadores, setTrabajadores] = useState([]);
+  const [initialUserRole, setInitialUserRole] = useState(authUser?.rol || '');
+  const userRoleLabel = initialUserRole ? initialUserRole.toUpperCase() : (authUser?.rol ? authUser.rol.toUpperCase() : 'ADMIN');
   const [loading, setLoading] = useState(false);
   const [registrando, setRegistrando] = useState(false);
+
+  useEffect(() => {
+    if (!initialUserRole && authUser?.rol) {
+      setInitialUserRole(authUser.rol);
+    }
+  }, [authUser, initialUserRole]);
 
   // ✅ Datos de la empresa
   const [empresa, setEmpresa] = useState({
@@ -107,11 +116,24 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
   const registrarUsuarioEnFirebase = async (email, password, nombre, apellido, rol, telefono) => {
     try {
       const emailNormalizado = email.trim().toLowerCase();
-      // 1. Crear usuario en Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(auth, emailNormalizado, password);
+
+      // 1. Crear o reutilizar una app secundaria para crear el usuario sin afectar la sesión actual
+      let secondaryApp;
+      try {
+        secondaryApp = getApp('secondary');
+      } catch (err) {
+        secondaryApp = initializeApp(firebaseConfig, 'secondary');
+      }
+      const secondaryAuth = getAuth(secondaryApp);
+
+      // 2. Crear usuario en Firebase Authentication con la app secundaria
+      const userCredential = await createUserWithEmailAndPassword(secondaryAuth, emailNormalizado, password);
       const uid = userCredential.user.uid;
 
-      // 2. Guardar datos del usuario en Firestore (colección 'usuarios')
+      // 3. Cerrar sesión de la app secundaria para no dejar la sesión secundaria activa
+      await signOut(secondaryAuth);
+
+      // 4. Guardar datos del usuario en Firestore (colección 'usuarios')
       await setDoc(doc(db, 'usuarios', uid), {
         uid: uid,
         nombre: nombre,
@@ -345,7 +367,7 @@ function PanelAdmin({ empresaData: empresaDataProp }) {
 
   return (
     <>
-      <HeaderInt empresaData={empresa} userRole="CEO" />
+      <HeaderInt empresaData={empresa} userRole={initialUserRole || userRoleLabel} />
       <div className="panel-admin-container">
         
         <div className="panel-header">
