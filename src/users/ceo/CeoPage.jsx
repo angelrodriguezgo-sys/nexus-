@@ -132,9 +132,7 @@ function CeoPage() {
               <FaUsers className="nav-icon" /> <span>Empleados</span>
             </button>
             <div className="nav-divider"></div>
-            <button className="nav-item" onClick={handleLogout}>
-              🚪 <span>Cerrar Sesión</span>
-            </button>
+            
           </nav>
         </aside>
         

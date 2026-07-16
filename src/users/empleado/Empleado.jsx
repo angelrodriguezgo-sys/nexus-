@@ -159,10 +159,7 @@ function Empleado() {
 
             <div className="nav-divider"></div>
 
-            <button className="nav-item" onClick={handleLogout}>
-              🚪 <span>Cerrar Sesión</span>
-            </button>
-
+            
             <div className="nav-stats">
               <div className="stat-item">
                 <span className="stat-label">Mi Rol:</span>
