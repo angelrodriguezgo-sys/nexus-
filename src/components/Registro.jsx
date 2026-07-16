@@ -7,7 +7,7 @@ function Registro() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // ✅ Estado del plan seleccionado (viene de Precios)
+  // ✅ Estado del plan seleccionado 
   const [planSeleccionado, setPlanSeleccionado] = useState(null);
   
   const [loading, setLoading] = useState(false);
