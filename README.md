@@ -137,9 +137,3 @@ Solución propuesta:
     - Expansión a otros países de Latinoamérica
 
     - Versión en ingles y portuguéspara el publico extranjero 
-
-
-
-
-
-
